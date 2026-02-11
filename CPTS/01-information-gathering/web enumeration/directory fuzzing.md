@@ -1,0 +1,38 @@
+**Overview:**
+- Directory fuzzing discovers hidden directories, files, and endpoints on web servers by testing common paths from a wordlist.
+- Useful for finding admin panels, backup files, API endpoints, and other resources not linked in the application.
+---
+## Directory Fuzzing
+
+```
+ffuf -w <wordlist>:FUZZ -u http://<target>:<port>/FUZZ
+```
+
+Fuzzes directories at root level.
+
+---
+## Extension Fuzzing
+
+```
+ffuf -w <wordlist>:FUZZ -u http://<target>:<port>/indexFUZZ
+```
+
+Fuzzes file extensions (e.g., index.php, index.html).
+
+---
+## Page Fuzzing
+
+```
+ffuf -w <wordlist>:FUZZ -u http://<target>:<port>/blog/FUZZ.php
+```
+
+Fuzzes page names within a known directory.
+
+---
+## Recursive Fuzzing
+
+```
+ffuf -w <wordlist>:FUZZ -u http://<target>:<port>/FUZZ -recursion -recursion-depth 1 -e .php -v
+```
+
+Recursively fuzzes directories. `-recursion-depth` controls depth, `-e` adds extensions, `-v` verbose output.
