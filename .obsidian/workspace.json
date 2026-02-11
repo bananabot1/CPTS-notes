@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CPTS/01-information-gathering/web enumeration/directory fuzzing.md",
+                "file": "CPTS/01-information-gathering/test.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "directory fuzzing"
+              "title": "test"
             }
           }
         ]
@@ -192,12 +192,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "e629275e092f004a",
+  "active": "4720f38cf2c93cf8",
   "lastOpenFiles": [
+    "CPTS/01-information-gathering/web enumeration/directory fuzzing.md",
+    "CPTS/01-information-gathering/test.md",
     "CPTS/02-pre-exploitation",
     "Untitled",
     "CPTS/01-information-gathering/web enumeration/parameter and value fuzzing.md",
-    "CPTS/01-information-gathering/web enumeration/directory fuzzing.md",
     "CPTS/01-information-gathering/active directory enumeration/01-initial enumeration.md",
     "CPTS/01-information-gathering/active directory enumeration/02-credentials enumeration.md",
     "CPTS/01-information-gathering/active directory enumeration/03-authenticated enumeration.md",
@@ -229,7 +230,6 @@
     "CPTS/03-exploitation/active directory exploitation",
     "CPTS/04-post-exploitation/file transfers",
     "CPTS/04-post-exploitation/file transfers",
-    "CPTS-field-manual/01-information-gathering/active directory enumeration/host enumeration",
     "Untitled 2.canvas",
     "Untitled 3.canvas",
     "Untitled 1.canvas",
