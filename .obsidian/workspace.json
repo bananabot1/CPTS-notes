@@ -157,20 +157,29 @@
             "state": {
               "type": "calendar",
               "state": {},
-              "icon": "calendar-with-checkmark",
-              "title": "Calendar"
+              "icon": "lucide-ghost",
+              "title": "calendar"
+            }
+          },
+          {
+            "id": "7a2f5eba014efb93",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-git:Open Git source control": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -179,11 +188,14 @@
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
       "templater-obsidian:Templater": false,
-      "obsidian-excalidraw-plugin:New drawing": false
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "4720f38cf2c93cf8",
+  "active": "e629275e092f004a",
   "lastOpenFiles": [
+    "CPTS/02-pre-exploitation",
+    "Untitled",
     "CPTS/01-information-gathering/web enumeration/parameter and value fuzzing.md",
     "CPTS/01-information-gathering/web enumeration/directory fuzzing.md",
     "CPTS/01-information-gathering/active directory enumeration/01-initial enumeration.md",
@@ -212,13 +224,11 @@
     "CPTS/05-lateral-movement/active directory lateral movement/privileged access.md",
     "CPTS/05-lateral-movement/active directory lateral movement",
     "CPTS/03-exploitation/active directory exploitation/ACL/ACL enumeration.md",
-    "CPTS/03-exploitation/active directory exploitation/ACL/ACL exploits.md",
     "CPTS/03-exploitation/active directory exploitation/ACL",
     "CPTS/01-information-gathering/active directory enumeration/03-authenticated enumeration",
     "CPTS/03-exploitation/active directory exploitation",
     "CPTS/04-post-exploitation/file transfers",
     "CPTS/04-post-exploitation/file transfers",
-    "Untitled",
     "CPTS-field-manual/01-information-gathering/active directory enumeration/host enumeration",
     "Untitled 2.canvas",
     "Untitled 3.canvas",
