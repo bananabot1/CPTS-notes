@@ -11,10 +11,14 @@
             "id": "1e77f23d4837e8d7",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "ACL enumeration and exploits"
             }
           }
         ]
@@ -190,6 +194,10 @@
   },
   "active": "e629275e092f004a",
   "lastOpenFiles": [
+    "02-pre-exploitation/login brute force",
+    "02-pre-exploitation/Untitled/Untitled",
+    "01-information-gathering/active directory enumeration/01-initial enumeration.md",
+    "01-information-gathering/active directory enumeration/02-credentials enumeration.md",
     "CPTS/01-information-gathering/test.md",
     "CPTS/01-information-gathering/web enumeration/directory fuzzing.md",
     "CPTS/02-pre-exploitation",
@@ -216,15 +224,11 @@
     "CPTS/01-information-gathering/active directory enumeration/04-living off the land.md",
     "CPTS/03-exploitation/active directory exploitation/kerberoasting.md",
     "CPTS/03-exploitation/active directory exploitation/trust relationships/child and parent domain trust.md",
-    "CPTS/03-exploitation/active directory exploitation/trust relationships/cross forest trust.md",
     "CPTS/03-exploitation/active directory exploitation/trust relationships",
-    "CPTS/05-lateral-movement/active directory lateral movement/privileged access.md",
     "CPTS/05-lateral-movement/active directory lateral movement",
-    "CPTS/03-exploitation/active directory exploitation/ACL/ACL enumeration.md",
     "CPTS/03-exploitation/active directory exploitation/ACL",
     "CPTS/01-information-gathering/active directory enumeration/03-authenticated enumeration",
     "CPTS/03-exploitation/active directory exploitation",
-    "CPTS/04-post-exploitation/file transfers",
     "CPTS/04-post-exploitation/file transfers",
     "Untitled 2.canvas",
     "Untitled 3.canvas",
