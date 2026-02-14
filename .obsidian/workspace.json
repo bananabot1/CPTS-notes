@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02-pre-exploitation/login brute force/HTTP web services.md",
+                "file": "04-post-exploitation/file transfers/upload files.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "HTTP web services"
+              "title": "upload files"
             }
           }
         ]
@@ -194,14 +194,17 @@
   },
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
+    "04-post-exploitation/file transfers/host files.md",
+    "04-post-exploitation/file transfers/download files.md",
+    "03-exploitation/active directory exploitation/ASEPRoasting.md",
+    "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "02-pre-exploitation/login brute force/custom wordlists.md",
+    "02-pre-exploitation/login brute force/HTTP web services.md",
     "02-pre-exploitation/login brute force/password policy filtering.md",
     "conflict-files-obsidian-git.md",
-    "02-pre-exploitation/login brute force/HTTP web services.md",
     "01-information-gathering/active directory enumeration/01-initial enumeration.md",
     "02-pre-exploitation/login brute force/custom wordlists/Untitled.md",
     "02-pre-exploitation/login brute force/custom wordlists",
-    "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "02-pre-exploitation/login brute force",
     "02-pre-exploitation/Untitled/Untitled",
     "01-information-gathering/active directory enumeration/02-credentials enumeration.md",
@@ -223,9 +226,6 @@
     "CPTS/03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "CPTS/03-exploitation/active directory exploitation/DCSync.md",
     "CPTS/03-exploitation/active directory exploitation/misconfigurations.md",
-    "CPTS/03-exploitation/active directory exploitation/ASEPRoasting.md",
-    "CPTS/03-exploitation/active directory exploitation/printnightmare.md",
-    "CPTS/03-exploitation/active directory exploitation/petitpotam.md",
     "CPTS/03-exploitation/active directory exploitation/trust relationships",
     "CPTS/05-lateral-movement/active directory lateral movement",
     "CPTS/03-exploitation/active directory exploitation/ACL",
