@@ -192,8 +192,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "1e77f23d4837e8d7",
+  "active": "e629275e092f004a",
   "lastOpenFiles": [
+    "03-exploitation/Untitled",
     "04-post-exploitation/file transfers/host files.md",
     "04-post-exploitation/file transfers/download files.md",
     "03-exploitation/active directory exploitation/ASEPRoasting.md",
@@ -225,7 +226,6 @@
     "CPTS/01-information-gathering/web enumeration",
     "CPTS/03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "CPTS/03-exploitation/active directory exploitation/DCSync.md",
-    "CPTS/03-exploitation/active directory exploitation/misconfigurations.md",
     "CPTS/03-exploitation/active directory exploitation/trust relationships",
     "CPTS/05-lateral-movement/active directory lateral movement",
     "CPTS/03-exploitation/active directory exploitation/ACL",
