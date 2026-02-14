@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02-pre-exploitation/login brute force/hydra.md",
+                "file": "02-pre-exploitation/login brute force/HTTP web services.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "hydra"
+              "title": "HTTP web services"
             }
           }
         ]
@@ -192,10 +192,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "7a2f5eba014efb93",
+  "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
-    "02-pre-exploitation/login brute force/hydra.md",
+    "02-pre-exploitation/login brute force/HTTP web services.md",
     "02-pre-exploitation/login brute force",
     "02-pre-exploitation/Untitled/Untitled",
     "01-information-gathering/active directory enumeration/01-initial enumeration.md",
