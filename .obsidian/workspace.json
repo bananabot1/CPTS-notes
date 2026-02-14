@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02-pre-exploitation/login brute force/HTTP web services.md",
+                "file": "02-pre-exploitation/login brute force/custom wordlists.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "HTTP web services"
+              "title": "custom wordlists"
             }
           }
         ]
@@ -194,10 +194,10 @@
   },
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
+    "02-pre-exploitation/login brute force/HTTP web services.md",
     "02-pre-exploitation/login brute force/password policy filtering.md",
     "01-information-gathering/active directory enumeration/01-initial enumeration.md",
     "02-pre-exploitation/login brute force/custom wordlists.md",
-    "02-pre-exploitation/login brute force/HTTP web services.md",
     "02-pre-exploitation/login brute force/custom wordlists/Untitled.md",
     "02-pre-exploitation/login brute force/custom wordlists",
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
