@@ -195,6 +195,7 @@
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
     "03-exploitation/service exploitation/SQL injection/union injection.md",
+    "03-exploitation/service exploitation/SQL injection/privilege enumeration.md",
     "03-exploitation/service exploitation/SQL injection/database enumeration.md",
     "03-exploitation/service exploitation/SQL injection/auth bypass.md",
     "01-information-gathering/service enumeration/MySQL (3306).md",
@@ -228,7 +229,6 @@
     "CPTS/01-information-gathering/test.md",
     "CPTS/01-information-gathering/web enumeration/directory fuzzing.md",
     "CPTS/02-pre-exploitation",
-    "CPTS/01-information-gathering/web enumeration/parameter and value fuzzing.md",
     "CPTS/01-information-gathering/web enumeration",
     "Untitled 2.canvas",
     "Untitled 3.canvas",
