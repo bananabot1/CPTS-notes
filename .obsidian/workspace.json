@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "00-templates/Untitled.md",
+                "file": "00-templates/MySQL commands.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Untitled"
+              "title": "MySQL commands"
             }
           }
         ]
@@ -194,13 +194,13 @@
   },
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
+    "00-templates/file transfers/download files.md",
+    "00-templates/file transfers/host files.md",
     "00-templates/file transfers/upload files.md",
-    "00-templates/Untitled.md",
+    "00-templates/MySQL commands.md",
     "00-templates/file transfers/MySQL queries.md",
     "00-templates",
     "03-exploitation/service exploitation",
-    "00-templates/file transfers/host files.md",
-    "00-templates/file transfers/download files.md",
     "03-exploitation/active directory exploitation/ASEPRoasting.md",
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "02-pre-exploitation/login brute force/custom wordlists.md",
