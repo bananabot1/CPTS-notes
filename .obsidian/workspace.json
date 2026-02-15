@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "04-post-exploitation/file transfers/upload files.md",
+                "file": "00-templates/file transfers/upload files.md",
                 "mode": "source",
                 "source": false
               },
@@ -194,9 +194,10 @@
   },
   "active": "e629275e092f004a",
   "lastOpenFiles": [
+    "00-templates",
     "03-exploitation/service exploitation",
-    "04-post-exploitation/file transfers/host files.md",
-    "04-post-exploitation/file transfers/download files.md",
+    "00-templates/file transfers/host files.md",
+    "00-templates/file transfers/download files.md",
     "03-exploitation/active directory exploitation/ASEPRoasting.md",
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "02-pre-exploitation/login brute force/custom wordlists.md",
@@ -212,7 +213,6 @@
     "CPTS/01-information-gathering/test.md",
     "CPTS/01-information-gathering/web enumeration/directory fuzzing.md",
     "CPTS/02-pre-exploitation",
-    "Untitled",
     "CPTS/01-information-gathering/web enumeration/parameter and value fuzzing.md",
     "CPTS/01-information-gathering/active directory enumeration/01-initial enumeration.md",
     "CPTS/01-information-gathering/active directory enumeration/02-credentials enumeration.md",
