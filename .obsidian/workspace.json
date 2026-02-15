@@ -192,8 +192,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "1e77f23d4837e8d7",
+  "active": "e629275e092f004a",
   "lastOpenFiles": [
+    "03-exploitation/service exploitation/SQL injection",
     "01-information-gathering/active directory enumeration/04-living off the land.md",
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "03-exploitation/active directory exploitation/trust relationships.md",
@@ -227,7 +228,6 @@
     "CPTS/01-information-gathering/web enumeration/parameter and value fuzzing.md",
     "CPTS/01-information-gathering/active directory enumeration/01-initial enumeration.md",
     "CPTS/01-information-gathering/active directory enumeration/02-credentials enumeration.md",
-    "CPTS/01-information-gathering/active directory enumeration/03-authenticated enumeration.md",
     "CPTS/01-information-gathering/web enumeration",
     "CPTS/03-exploitation/active directory exploitation/trust relationships",
     "Untitled 2.canvas",
