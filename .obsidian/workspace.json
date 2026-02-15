@@ -194,9 +194,9 @@
   },
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
-    "03-exploitation/service exploitation/SQL injection/auth bypass.md",
-    "03-exploitation/service exploitation/SQL injection/union injection.md",
     "01-information-gathering/service enumeration/MySQL (3306).md",
+    "03-exploitation/service exploitation/SQL injection/union injection.md",
+    "03-exploitation/service exploitation/SQL injection/auth bypass.md",
     "03-exploitation/service exploitation/SQL injection",
     "01-information-gathering/active directory enumeration/04-living off the land.md",
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
