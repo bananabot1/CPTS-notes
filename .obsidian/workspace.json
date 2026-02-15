@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
+                "file": "03-exploitation/active directory exploitation/ASEPRoasting.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ACL enumeration and exploits"
+              "title": "ASEPRoasting"
             }
           }
         ]
@@ -194,6 +194,7 @@
   },
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
+    "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "05-lateral-movement/active directory lateral movement/privileged access.md",
     "02-pre-exploitation/login brute force/HTTP web services.md",
     "02-pre-exploitation/login brute force/password policy filtering.md",
@@ -211,7 +212,6 @@
     "01-information-gathering/active directory enumeration/01-initial enumeration.md",
     "03-exploitation/service exploitation/SQL injection",
     "01-information-gathering/active directory enumeration/04-living off the land.md",
-    "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "03-exploitation/active directory exploitation/trust relationships.md",
     "03-exploitation/active directory exploitation/misconfigurations.md",
     "03-exploitation/active directory exploitation/group policy enumeration and attacks.md",
