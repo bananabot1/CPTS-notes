@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "03-exploitation/active directory exploitation/ASEPRoasting.md",
+                "file": "03-exploitation/service exploitation/SQL injection/database enumeration.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ASEPRoasting"
+              "title": "database enumeration"
             }
           }
         ]
@@ -194,6 +194,8 @@
   },
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
+    "03-exploitation/service exploitation/SQL injection/auth bypass.md",
+    "03-exploitation/active directory exploitation/ASEPRoasting.md",
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
     "05-lateral-movement/active directory lateral movement/privileged access.md",
     "02-pre-exploitation/login brute force/HTTP web services.md",
@@ -208,14 +210,12 @@
     "03-exploitation/service exploitation/SQL injection/read and write files.md",
     "03-exploitation/service exploitation/SQL injection/database enumeration.md",
     "03-exploitation/service exploitation/SQL injection/privilege enumeration.md",
-    "03-exploitation/service exploitation/SQL injection/auth bypass.md",
     "01-information-gathering/active directory enumeration/01-initial enumeration.md",
     "03-exploitation/service exploitation/SQL injection",
     "01-information-gathering/active directory enumeration/04-living off the land.md",
     "03-exploitation/active directory exploitation/trust relationships.md",
     "03-exploitation/active directory exploitation/misconfigurations.md",
     "03-exploitation/active directory exploitation/group policy enumeration and attacks.md",
-    "03-exploitation/active directory exploitation/ASEPRoasting.md",
     "00-templates/file transfers/upload files.md",
     "00-templates/file transfers/host files.md",
     "01-information-gathering/service enumeration/Untitled.md",
