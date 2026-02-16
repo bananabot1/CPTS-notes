@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "03-exploitation/service exploitation/SQL injection/database enumeration.md",
+                "file": "03-exploitation/service exploitation/SQL injection/read and write files.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "database enumeration"
+              "title": "read and write files"
             }
           }
         ]
@@ -195,8 +195,8 @@
   "active": "1e77f23d4837e8d7",
   "lastOpenFiles": [
     "03-exploitation/service exploitation/SQL injection/privilege enumeration.md",
-    "03-exploitation/service exploitation/SQL injection/union injection.md",
     "03-exploitation/service exploitation/SQL injection/database enumeration.md",
+    "03-exploitation/service exploitation/SQL injection/union injection.md",
     "03-exploitation/service exploitation/SQL injection/auth bypass.md",
     "03-exploitation/active directory exploitation/ASEPRoasting.md",
     "03-exploitation/active directory exploitation/ACL enumeration and exploits.md",
