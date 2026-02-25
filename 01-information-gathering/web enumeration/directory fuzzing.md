@@ -1,6 +1,9 @@
 **Overview:**
 - Directory fuzzing discovers hidden directories, files, and endpoints on web servers by testing common paths from a wordlist.
 - Useful for finding admin panels, backup files, API endpoints, and other resources not linked in the application.
+
+**Wordlists:**
+- `/home/kali/SecLists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-small.txt`
 ---
 ## Directory Fuzzing
 
