@@ -3,6 +3,7 @@
 
 [[parameter and value fuzzing]]
 - /home/kali/SecLists/Discovery/Web-Content/burp-parameter-names.txt
+- /home/kali/SecLists/Discovery/Web-Content/web-extensions.txt
 
 [[local file inclusion]]
 - /home/kali/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt 
