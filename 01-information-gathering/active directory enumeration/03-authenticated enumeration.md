@@ -1,4 +1,5 @@
 **Overview:**
+- Enumeration techniques after having retrieved valid credentials.
 - Used to get information about domain user and computer attributes, group membership, Group Policy Objects, permissions, ACLs, trusts, and more. 
 - These tools will not work without valid domain user credentials at any permission level. 
 ---
