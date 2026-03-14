@@ -7,3 +7,4 @@
 
 [[local file inclusion]]
 - /home/kali/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt 
+
