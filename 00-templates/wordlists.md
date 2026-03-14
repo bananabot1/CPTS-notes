@@ -8,3 +8,7 @@
 [[local file inclusion]]
 - /home/kali/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt 
 
+[[login brute force]]
+-  /usr/share/wordlists/rockyou.txt
+
+
