@@ -1,14 +1,18 @@
-[[directory fuzzing]]
+
+**Directory Fuzzing**
 - /home/kali/SecLists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-small.txt
 
-[[parameter and value fuzzing]]
+**Parameter And Value Fuzzing**
 - /home/kali/SecLists/Discovery/Web-Content/burp-parameter-names.txt
 - /home/kali/SecLists/Discovery/Web-Content/web-extensions.txt
 
-[[local file inclusion]]
+**Local File Inclusion**
 - /home/kali/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt 
 
-[[login brute force]]
+**Password Spraying**
 -  /usr/share/wordlists/rockyou.txt
 
+**Usernames**
+- /home/kali/SecLists/Usernames/xato-net-10-million-usernames.txt
+- /home/kali/SecLists/Usernames/top-usernames-shortlist.txt
 
