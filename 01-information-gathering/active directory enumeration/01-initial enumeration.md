@@ -26,7 +26,7 @@ Captures LLMNR, NBT-NS, and MDNS queries on the interface.
 fping -asgq 172.16.5.0/23
 ```
 
-Ping sweep — returns only live hosts. `-a` alive, `-s` stats, `-g` CIDR expand, `-q` quiet.
+Ping sweep.  Returns only live hosts. `-a` alive, `-s` stats, `-g` CIDR expand, `-q` quiet.
 
 ---
 ## Kerberos Enumeration
