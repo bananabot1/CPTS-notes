@@ -5,8 +5,6 @@
 ---
 ## Discovery & Footprinting
 
-Browsing to `/robots.txt` often reveals WordPress-specific paths:
-
 ```
 User-agent: *
 Disallow: /wp-admin/
@@ -15,10 +13,10 @@ Disallow: /wp-content/uploads/wpforms/
 Sitemap: https://inlanefreight.local/wp-sitemap.xml
 ```
 
+Browsing to `/robots.txt` often reveals WordPress-specific paths.
 Presence of `/wp-admin` and `/wp-content` confirms a WordPress installation.
 
 ---
-
 ## Enumeration
 
 ```
@@ -35,7 +33,6 @@ curl -s http://<target> | grep plugins
 Identify active themes and plugins. Use version numbers found to search for known vulnerabilities.
 
 ---
-
 ## WPScan
 
 ```
