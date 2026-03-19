@@ -1,13 +1,22 @@
 **Overview:**
-- Drupal is an open-source CMS that is popular among companies and developers. 
-- Drupal is written in PHP and supports using MySQL or PostgreSQL for the backend.
-- Additionally, SQLite can be used if there's no DBMS installed. Like WordPress, Drupal allows users to enhance their websites through the use of themes and modules
--  Drupal indexes its content using nodes. A node can hold anything such as a blog post, poll, article, etc. The page URIs are usually of the form `/node/<nodeid>`.
+- Drupal is an open-source CMS written in PHP, supporting MySQL, PostgreSQL, or SQLite as the backend.
+- Like WordPress, it supports themes and modules, making third-party extensions a common attack surface.
+- Drupal indexes content using nodes (e.g. `/node/<id>`), which can hold blog posts, articles, polls, and more.
+- Drupal can be identified via the `Powered by Drupal` header/footer, the standard logo, presence of `CHANGELOG.txt` or `README.txt`, page source inspection, or `/node` references in `robots.txt`
 ---
-Discovery
-A Drupal website can be identified in several ways, including by the header or footer message `Powered by Drupal`, the standard Drupal logo, the presence of a `CHANGELOG.txt` file or `README.txt file`, via the page source, or clues in the robots.txt file such as references to `/node`
+## Discovery
+
 ```
- curl -s http://drupal.inlanefreight.local | grep Drupal
+curl -s http://<target> | grep Drupal
 ```
 
-enumeration
+Confirm Drupal and identify version from page source.
+
+---
+## Enumeration
+
+```
+droopescan scan drupal -u http://<target>
+```
+
+Fingerprints Drupal version, installed modules, themes, and known vulnerabilities.
