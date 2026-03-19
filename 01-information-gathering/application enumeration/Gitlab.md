@@ -5,12 +5,12 @@
 ---
 ## Discovery
 
-Identified by the GitLab logo on the login page. Version only confirmed via `/help` when logged in. Known vulnerable versions: `12.9.0`, `11.4.7`, `13.10.3`, `13.9.3`, `13.10.2`. If version cannot be determined, hunt for secrets rather than attempting exploits blindly.
+Identified by the GitLab logo on the login page. Version only confirmed via `/help` when logged in. Known vulnerable versions: `12.9.0`, `11.4.7`, `13.10.3`, `13.9.3`, `13.10.2`. 
 
 ---
 ## Enumeration
 
-Browse `/explore` for public projects without authentication. If open registration is allowed, register and check again. nternal repositories become visible to authenticated users.
+Browse `/explore` for public projects without authentication. If open registration is allowed, register and check again. Public projects can be interesting because they can provide more information about the company's infrastructure, like production code with a bug , hard-coded credentials, a script or configuration file containing credentials, or other secrets such as an SSH private key or API key.
 
 ---
 ## User & Email Enumeration
