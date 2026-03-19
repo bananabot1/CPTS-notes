@@ -1,0 +1,5 @@
+- Splunk is a log analytics tool used to gather, analyze and visualize data. Though not originally intended to be a SIEM tool, Splunk is often used for security monitoring and business analytics.
+- Splunk deployments are often used to house sensitive data and could provide a wealth of information for an attacker if compromised.
+- Splunk is prevalent in internal networks and often runs as root on Linux or SYSTEM on Windows systems. 
+- The biggest focus of Splunk during an assessment would be weak or null authentication because admin access to Splunk gives  the ability to deploy custom applications that can be used to compromise a Splunk server and possibly other hosts in the network.
+---
