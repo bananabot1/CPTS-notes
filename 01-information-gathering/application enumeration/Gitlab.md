@@ -15,4 +15,5 @@ Browse `/explore` for public projects without authentication. If open registrati
 ---
 ## User & Email Enumeration
 
-The registration form at `/users/sign_up` leaks valid usernames and emails even when sign-up is disabled. Use findings for credential reuse or password spraying.
+Even if the `Sign-up enabled` checkbox is cleared within the settings page under `Sign-up restrictions`, it's still possible to browse to the `/users/sign_up` page and enumerate users but it will not be possible to register a user.
+Some mitigations can be put in place for this, such as enforcing 2FA on all user accounts, using `Fail2Ban` to block failed login attempts which are indicative of brute-forcing attacks.
