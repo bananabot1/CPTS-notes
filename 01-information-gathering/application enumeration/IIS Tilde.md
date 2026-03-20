@@ -1,16 +1,30 @@
 **Overview:**
-IIS tilde directory enumeration is a technique utilised to uncover hidden files, directories, and short file names (aka the `8.3 format`) on some versions of Microsoft Internet Information Services (IIS) web servers. This method takes advantage of a specific vulnerability in IIS, resulting from how it manages short file names within its directories.
+- IIS tilde enumeration is a technique used to uncover hidden files, directories, and short file names (8.3 format) on vulnerable Microsoft IIS web servers.
+- When a file or folder is created on an IIS server, Windows generates a short file name in 8.3 format (8 chars + `.` + 3 chars extension). These short names can grant access to their corresponding files even if they were meant to be hidden.
+- The tilde (`~`) character followed by a sequence number represents a short file name in a URL (e.g. `TRANSF~1.ASP`). If a valid short name is found, it can be used to access the resource or enumerate further.
+- Enumeration involves sending HTTP requests with distinct character combinations to identify valid short file names, then using that information to access resources or enumerate the directory structure further.
+---
+## Tilde Enumeration
 
-When a file or folder is created on an IIS server, Windows generates a short file name in the `8.3 format`, consisting of eight characters for the file name, a period, and three characters for the extension. Intriguingly, these short file names can grant access to their corresponding files and folders, even if they were meant to be hidden or inaccessible.
+```
+java -jar iis_shortname_scanner.jar 0 5 http://<target>/
+```
 
-The tilde (`~`) character, followed by a sequence number, signifies a short file name in a URL. Hence, if someone determines a file or folder's short file name, they can exploit the tilde character and the short file name in the URL to access sensitive data or hidden resources.
-
-IIS tilde directory enumeration primarily involves sending HTTP requests to the server with distinct character combinations in the URL to identify valid short file names. Once a valid short file name is detected, this information can be utilised to access the relevant resource or further enumerate the directory structure.
+Automates sending character combinations via HTTP to identify valid short file names.
 
 ---
-#### Tilde Enumeration using IIS ShortName Scanner
+## Wordlist Generation
+
+If direct access to the discovered short name is blocked (e.g. `TRANSF~1.ASP`), brute-force the full filename using a targeted wordlist.
+
 ```
-java -jar iis_shortname_scanner.jar 0 5 http://10.129.204.231/
+egrep -r ^transf /usr/share/wordlists/* | sed 's/^[^:]*://' > /tmp/list.txt
 ```
 
-Fortunately, there is a tool called `IIS-ShortName-Scanner` that can automate the task of sending each letter of the alphabet in a HTTP request.  To use `IIS-ShortName-Scanner`, you will need to install Oracle Java on either Pwnbox or your local VM.
+Filters wordlists for entries starting with the known short name prefix and saves them to a custom list.
+
+```
+gobuster dir -u http://<target>/ -w /tmp/list.txt -x .aspx,.asp
+```
+
+Enumerate the target using the generated wordlist to find the full filename.
