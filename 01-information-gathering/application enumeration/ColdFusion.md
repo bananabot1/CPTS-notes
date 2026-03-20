@@ -1,6 +1,5 @@
 **Overview:**
-ColdFusion is a programming language and a web application development platform based on Java. ColdFusion was initially developed by the Allaire Corporation in 1995 and was acquired by Macromedia in 2001. Macromedia was later acquired by Adobe Systems, which now owns and develops ColdFusion.
-
-It is used to build dynamic and interactive web applications that can be connected to various APIs and databases such as MySQL, Oracle, and Microsoft SQL Server. ColdFusion was first released in 1995 and has since evolved into a powerful and versatile platform for web development.
-
-ColdFusion Markup Language (`CFML`) is the proprietary programming language used in ColdFusion to develop dynamic web applications. It has a syntax similar to HTML, making it easy to learn for web developers. CFML includes tags and functions for database integration, web services, email management, and other common web development tasks. Its tag-based approach simplifies application development by reducing the amount of code needed to accomplish complex tasks. For instance, the `cfquery` tag can execute SQL statements to retrieve data from a database:
+- ColdFusion is a programming language and a web application development platform based on Java.
+- It is used to build dynamic and interactive web applications that can be connected to various APIs and databases such as MySQL, Oracle, and Microsoft SQL Server. ColdFusion was first released in 1995 and has since evolved into a powerful and versatile platform for web development.
+- ColdFusion Markup Language (`CFML`) is the proprietary programming language used in ColdFusion to develop dynamic web applications. It has a syntax similar to HTML, making it easy to learn for web developers. CFML includes tags and functions for database integration, web services, email management, and other common web development tasks. Its tag-based approach simplifies application development by reducing the amount of code needed to accomplish complex tasks. For instance, the `cfquery` tag can execute SQL statements to retrieve data from a database.
+- 
