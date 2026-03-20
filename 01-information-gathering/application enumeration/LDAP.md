@@ -11,3 +11,9 @@ enumeration
 ```
 ldapsearch -H ldap://ldap.example.com:389 -D "cn=admin,dc=example,dc=com" -w secret123 -b "ou=people,dc=example,dc=com" "(mail=john.doe@example.com)"
 ```
+`ldapsearch` is a command-line utility used to search for information stored in a directory using the LDAP protocol.
+- Connect to the server `ldap.example.com` on port `389`.
+- Bind (authenticate) as `cn=admin,dc=example,dc=com` with password `secret123`.
+- Search under the base DN `ou=people,dc=example,dc=com`.
+- Use the filter `(mail=john.doe@example.com)` to find entries that have this email address.
+
