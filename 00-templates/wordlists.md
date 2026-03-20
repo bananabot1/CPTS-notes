@@ -6,6 +6,10 @@
 - /home/kali/SecLists/Discovery/Web-Content/burp-parameter-names.txt
 - /home/kali/SecLists/Discovery/Web-Content/web-extensions.txt
 
+**Subdomain and Vhosts**
+- /home/kali/SecLists/Discovery/DNS/subdomains-top1million-20000.txt
+-  /home/kali/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
+-
 **Local File Inclusion**
 - /home/kali/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt 
 
