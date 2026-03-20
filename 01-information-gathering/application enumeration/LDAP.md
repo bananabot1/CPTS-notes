@@ -17,5 +17,5 @@ Identify LDAP on port `389` (or `636` for LDAPS).
 ldapsearch -H ldap://<target>:389 -D "cn=<user>,dc=<domain>,dc=<tld>" -w <password> -b "ou=<ou>,dc=<domain>,dc=<tld>" "(<filter>)"
 ```
 
-Query the LDAP directory. `-H` target URI, `-D` bind DN (authenticate as), `-w` password, `-b` base DN to search under, last argument is the search filter (e.g. `(mail=john.doe@example.com)`.```
+Query the LDAP directory. `-H` target URI, `-D` bind DN (authenticate as), `-w` password, `-b` base DN to search under, last argument is the search filter (e.g. `(mail=john.doe@example.com)`.
 
