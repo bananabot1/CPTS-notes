@@ -20,6 +20,6 @@
 ---
 ## SMB
 
-|Operation|Command|Platform|
-|---|---|---|
-|Host|`impacket-smbserver -ip <lhost> -smb2support -username <user> -password <password> <share> <path>`|Linux|
+| Operation | Command                                                                                            | Platform |
+| --------- | -------------------------------------------------------------------------------------------------- | -------- |
+| Host      | `impacket-smbserver -ip <lhost> -smb2support -username <user> -password <password> <share> <path>` | Linux    |
