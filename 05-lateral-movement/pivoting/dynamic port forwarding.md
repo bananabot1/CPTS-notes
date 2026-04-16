@@ -11,3 +11,24 @@ ssh -L 1234:localhost:3306 -L 8080:localhost:80 ubuntu@10.129.202.64
 ```
 forwarding multiple ports
 
+setting up a pivoting port
+```
+ssh -D 9050 ubuntu@10.129.202.64
+```
+enabling port forwarding with ssh.
+The `-D` argument requests the SSH server to enable dynamic port forwarding. Once we have this enabled, we will require a tool that can route any tool's packets over the port `9050`. We can do this using the tool `proxychains`, which is capable of redirecting TCP connections through TOR, SOCKS, and HTTP/HTTPS proxy servers
+
+```
+```
+proxychains nmap -v -Pn -sT 172.16.5.19
+```
+```
+scan the host through the pivot
+
+```
+proxychains msfconsole
+```
+open Metasploit using proxychains and send all associated traffic through the proxy we have established.
+```
+proxychains xfreerdp /v:172.16.5.19 /u:victor /p:pass@123
+```
