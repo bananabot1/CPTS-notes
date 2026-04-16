@@ -29,8 +29,8 @@ The Chisel listener will listen for incoming connections on port `1234` using SO
 ./chisel client -v 10.129.202.64:1234 socks
 ```
 start a client from the attack host and connect to the target server.
+the Chisel client has created a TCP/UDP tunnel via HTTP secured using SSH between the Chisel server and the client and has started listening on port 1080. 
 
-, the Chisel client has created a TCP/UDP tunnel via HTTP secured using SSH between the Chisel server and the client and has started listening on port 1080. 
 ```
  tail -f /etc/proxychains.conf 
 
