@@ -1,34 +1,51 @@
 **Overview:**
-- ICMP tunneling encapsulates traffic within `ICMP packets` containing `echo requests` and `responses`. ICMP tunneling would only work when ping responses are permitted within a firewalled network. 
-- When a host within a firewalled network is allowed to ping an external server, it can encapsulate its traffic within the ping echo request and send it to an external server. The external server can validate this traffic and send an appropriate response, which is extremely useful for data exfiltration and creating pivot tunnels to an external server.
-----
+- ICMP tunneling encapsulates traffic within ICMP packets (echo requests and responses). It only works when ping responses are permitted within the firewalled network.
+- When a host inside a firewalled network is allowed to ping an external server, it can encapsulate traffic inside ping echo requests and send it outbound. The external server validates the traffic and responds accordingly, enabling data exfiltration and pivot tunnels.
+- `ptunnel-ng` implements this by running a server on the pivot host and a client on the attack host, establishing an ICMP-encapsulated channel that can carry SSH traffic.
+---
+## Installation
+
 ```
 git clone https://github.com/utoni/ptunnel-ng.git
 ```
 
-Once the ptunnel-ng repo is cloned to our attack host, we can run the `autogen.sh` script located at the root of the ptunnel-ng directory.
+Clone the repository on the attack host, then run `autogen.sh` from the root of the ptunnel-ng directory to build the binary.
 
 ```
-scp -r ptunnel-ng ubuntu@10.129.202.64:~/
+scp -r ptunnel-ng ubuntu@<target>:~/
 ```
- transfer the file, the -r flag will transfer the repo and all the files contained in the repo.
+
+Transfer the full repository to the pivot host. `-r` transfers the directory recursively.
+
+---
+## Server (Pivot Host)
 
 ```
-sudo ./ptunnel-ng -r10.129.202.64 -R22
+sudo ./ptunnel-ng -r<target> -R22
 ```
-strat a ptunnel server on the target host. The IP address following `-r` should be the IP of the jump-box we want ptunnel-ng to accept connections on
+
+Start the ptunnel-ng server on the pivot host. `-r` IP address the server will accept connections on (the pivot host's IP), `-R` port to forward to on that host (`22` for SSH).
+
+---
+## Client (Attack Host)
 
 ```
-sudo ./ptunnel-ng -p10.129.202.64 -l2222 -r10.129.202.64 -R22
+sudo ./ptunnel-ng -p<target> -l2222 -r<target> -R22
 ```
-Back on the attack host, we can attempt to connect to the ptunnel-ng server (`-p <ipAddressofTarget>`) but ensure this happens through local port 2222 (`-l2222`)
+
+Connect to the ptunnel-ng server from the attack host. `-p` pivot host IP (server address), `-l` local port to listen on, `-r` remote host to forward traffic to, `-R` remote port.
+
+---
+## SSH Through the Tunnel
 
 ```
-ssh -p2222 -lubuntu 127.0.0.1
+ssh -p2222 -l ubuntu 127.0.0.1
 ```
-If configured correctly, we will be able to enter credentials and have an SSH session all through the ICMP tunnel.
+
+Connect via SSH through the ICMP tunnel. Traffic sent to local port `2222` is encapsulated in ICMP and forwarded to port `22` on the pivot host.
 
 ```
-ssh -D 9050 -p2222 -lubuntu 127.0.0.1
+ssh -D 9050 -p2222 -l ubuntu 127.0.0.1
 ```
-enable port forwarding through the enstablished tunnel
+
+Enable dynamic port forwarding through the established ICMP tunnel. `-D` creates a SOCKS proxy on local port `9050`, allowing proxychains to route traffic further into the internal network.

