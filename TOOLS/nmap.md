@@ -55,7 +55,7 @@ nmap basic syntax
 | -iL                  | Performs defined scans against targets in provided 'hosts.lst' list.                                 |
 | -sT                  | uses the TCP three-way handshake to determine if a specific port on a target host is open or closed. |
 | --script <category>  | Uses specified NSE scripts.                                                                          |
-|                      |                                                                                                      |
+| --source-port        | Performs the scans from specified source port.                                                       |
 
 ## NSE scripts
 
@@ -111,6 +111,31 @@ Nmap's TCP ACK scan (`-sA`) method is much harder to filter for firewalls and ID
 ```
 sudo nmap 10.129.2.28 -p 80 -sS -Pn -n --disable-arp-ping --packet-trace -D RND:5
 ```
-scan by using decoys
+scan by using decoys. The spoofed packets are often filtered out by ISPs and routers, even though they come from the same network range.
+
+```
+sudo nmap 10.129.2.28 -n -Pn -p445 -O
+```
+Decoys can be used for SYN, ACK, ICMP scans, and OS detection scans.
+
+```
+ sudo nmap 10.129.2.28 -n -Pn -p 445 -O -S 10.129.2.200 -e tun0
+```
+scan by using a different source ip
+
+
+```
+ sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace
+```
+sys scan for a filtered por
+```
+sudo nmap 10.129.2.28 -p50000 -sS -Pn -n --disable-arp-ping --packet-trace --source-port 53
+```
+
+if we have found out that the firewall accepts `TCP port 53`, it is very likely that IDS/IPS filters might also be configured much weaker than others
+```
+ncat -nv --source-port 53 10.129.2.28 50000
+```
+connect to the filtered port
 
 
