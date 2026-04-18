@@ -45,7 +45,6 @@ nmap <scan types> <options> <target>
 |`-iL`|Read targets from file|
 
 ---
-
 ## NSE Script Categories
 
 |Category|Description|
@@ -66,7 +65,6 @@ nmap <scan types> <options> <target>
 |`vuln`|Specific vulnerability identification|
 
 ---
-
 ## Performance Options
 
 |Option|Description|
@@ -80,7 +78,6 @@ nmap <scan types> <options> <target>
 |`-T <0-5>`|Timing template (0=paranoid, 5=insane)|
 
 ---
-
 ## Output Options
 
 |Option|Description|
@@ -97,14 +94,10 @@ xsltproc target.xml -o target.html
 Convert XML output to HTML for browser viewing.
 
 ---
-
 ## Firewall and IDS/IPS Evasion
 
-Firewalls inspect and filter packets based on configured rules. IDS scans for attack patterns and reports them. IPS extends IDS by actively blocking detected threats based on signature matching.
-
+ Firewalls inspect and filter packets based on configured rules. IDS scans for attack patterns and reports them. IPS extends IDS by actively blocking detected threats based on signature matching.
 The TCP ACK scan (`-sA`) is harder to filter than SYN or connect scans because it sends only the ACK flag, which many firewalls and IDS/IPS treat as established-connection traffic.
-
-DNS servers are often more trusted by firewalls than arbitrary external hosts. Using `TCP port 53` as a source port can cause firewall rules and IDS/IPS filters to treat packets as legitimate DNS traffic and pass them through.
 
 ```
 sudo nmap <target> -p <port> -sS -Pn -n --disable-arp-ping --packet-trace -D RND:5
@@ -116,11 +109,12 @@ SYN scan using random decoys to obscure the real source. Decoys work with SYN, A
 sudo nmap <target> -n -Pn -p <port> -O -S <spoofed-ip> -e tun0
 ```
 
-OS detection scan using a spoofed source IP. `-S` sets the source IP, `-e` specifies the interface.
+OS detection scan using a spoofed source IP (Nmap uses this address as the apparent source of the scan packets, instead of the real attack host). `-S` sets the source IP, `-e` specifies the interface.
 
 ---
-
 ## Source Port Evasion Flow
+
+ DNS servers are often more trusted by firewalls than arbitrary external hosts. Using `TCP port 53` as a source port can cause firewall rules and IDS/IPS filters to treat packets as legitimate DNS traffic and pass them through.
 
 ```
 sudo nmap <target> -p <port> -sS -Pn -n --disable-arp-ping --packet-trace
