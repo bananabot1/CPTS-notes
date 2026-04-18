@@ -114,7 +114,7 @@ sudo nmap <target> -n -Pn -p <port> -O -S <spoofed-ip> -e tun0
 OS detection scan using a spoofed source IP (Nmap uses this address as the apparent source of the scan packets, instead of the real attack host). `-S` sets the source IP, `-e` specifies the interface.
 
 ---
-## Source Port Evasion Flow
+## DNS Proxying
 
  - DNS servers are often more trusted by firewalls than arbitrary external hosts. Using `TCP port 53` as a source port can cause firewall rules and IDS/IPS filters to treat packets as legitimate DNS traffic and pass them through.
 
