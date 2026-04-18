@@ -1,48 +1,48 @@
+**Overview:**
 - Nmap is an open-source network analysis and security auditing tool written in C, C++, Python, and Lua. It uses raw packets to identify live hosts, open ports, running services and versions, and operating systems.
 - Common use cases: network mapping, firewall and IDS/IPS auditing, vulnerability assessment, penetration test simulation, and response analysis.
 - Nmap offers multiple firewall and IDS/IPS evasion techniques including packet fragmentation, decoys, source IP spoofing, and source port manipulation.
-
 ---
 ## Syntax
 
 ```
-nmap <scan types> <options> <target>
+nmap <scan-types> <options> <target>
 ```
 
 ---
 ## Scanning Options
 
-|Option|Description|
-|---|---|
-|`10.10.10.0/24`|Target network range|
-|`-sn`|Disable port scanning|
-|`-Pn`|Disable ICMP Echo Requests|
-|`-n`|Disable DNS resolution|
-|`-PE`|ICMP Echo Request ping scan|
-|`--packet-trace`|Show all packets sent and received|
-|`--reason`|Display reason for each result|
-|`--disable-arp-ping`|Disable ARP ping requests|
-|`--top-ports=<num>`|Scan the most frequent top ports|
-|`-p-`|Scan all ports|
-|`-p22-110`|Scan port range 22 to 110|
-|`-p22,25`|Scan specific ports|
-|`-F`|Scan top 100 ports|
-|`-sS`|TCP SYN scan|
-|`-sT`|TCP connect scan (full three-way handshake)|
-|`-sA`|TCP ACK scan|
-|`-sU`|UDP scan|
-|`-sV`|Service version detection|
-|`-sC`|Default script scan|
-|`--script <script>`|Run specified NSE script or category|
-|`-O`|OS detection|
-|`-A`|OS detection, service detection, and traceroute|
-|`-D RND:5`|Use 5 random decoys|
-|`-e`|Specify network interface|
-|`-S <ip>`|Spoof source IP address|
-|`-g`|Specify source port|
-|`--source-port`|Scan from specified source port|
-|`--dns-server <ns>`|Use specified DNS server for resolution|
-|`-iL`|Read targets from file|
+| Option               | Description                                     |
+| -------------------- | ----------------------------------------------- |
+| `10.10.10.0/24`      | Target network range                            |
+| `-sn`                | Disable port scanning                           |
+| `-Pn`                | Disable ICMP Echo Requests                      |
+| `-n`                 | Disable DNS resolution                          |
+| `-PE`                | ICMP Echo Request ping scan                     |
+| `--packet-trace`     | Show all packets sent and received              |
+| `--reason`           | Display reason for each result                  |
+| `--disable-arp-ping` | Disable ARP ping requests                       |
+| `--top-ports=<num>`  | Scan the most frequent top ports                |
+| `-p-`                | Scan all ports                                  |
+| `-p22-110`           | Scan port range 22 to 110                       |
+| `-p22,25`            | Scan specific ports                             |
+| `-F`                 | Scan top 100 ports                              |
+| `-sS`                | TCP SYN scan                                    |
+| `-sT`                | TCP connect scan (full three-way handshake)     |
+| `-sA`                | TCP ACK scan                                    |
+| `-sU`                | UDP scan                                        |
+| `-sV`                | Service version detection                       |
+| `-sC`                | Default script scan                             |
+| `--script <script>`  | Run specified NSE script or category            |
+| `-O`                 | OS detection                                    |
+| `-A`                 | OS detection, service detection, and traceroute |
+| `-D RND:5`           | Use 5 random decoys                             |
+| `-e`                 | Specify network interface                       |
+| `-S <ip>`            | Spoof source IP address                         |
+| `-g`                 | Specify source port                             |
+| `--source-port`      | Scan from specified source port                 |
+| `--dns-server <ns>`  | Use specified DNS server for resolution         |
+| `-iL`                | Read targets from file                          |
 
 ---
 ## NSE Script Categories
@@ -96,8 +96,10 @@ Convert XML output to HTML for browser viewing.
 ---
 ## Firewall and IDS/IPS Evasion
 
- Firewalls inspect and filter packets based on configured rules. IDS scans for attack patterns and reports them. IPS extends IDS by actively blocking detected threats based on signature matching.
-The TCP ACK scan (`-sA`) is harder to filter than SYN or connect scans because it sends only the ACK flag, which many firewalls and IDS/IPS treat as established-connection traffic.
+ - Firewalls inspect and filter packets based on configured rules. 
+-  IDS scans for attack patterns and reports them. 
+ - IPS extends IDS by actively blocking detected threats based on signature matching.
+- The TCP ACK scan (`-sA`) is harder to filter than SYN or connect scans because it sends only the ACK flag, which many firewalls and IDS/IPS treat as established-connection traffic.
 
 ```
 sudo nmap <target> -p <port> -sS -Pn -n --disable-arp-ping --packet-trace -D RND:5
@@ -114,7 +116,7 @@ OS detection scan using a spoofed source IP (Nmap uses this address as the appar
 ---
 ## Source Port Evasion Flow
 
- DNS servers are often more trusted by firewalls than arbitrary external hosts. Using `TCP port 53` as a source port can cause firewall rules and IDS/IPS filters to treat packets as legitimate DNS traffic and pass them through.
+ - DNS servers are often more trusted by firewalls than arbitrary external hosts. Using `TCP port 53` as a source port can cause firewall rules and IDS/IPS filters to treat packets as legitimate DNS traffic and pass them through.
 
 ```
 sudo nmap <target> -p <port> -sS -Pn -n --disable-arp-ping --packet-trace
