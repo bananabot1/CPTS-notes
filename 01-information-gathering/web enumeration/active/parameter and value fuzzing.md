@@ -1,7 +1,7 @@
 **Overview:**
 - Parameter fuzzing discovers hidden, undocumented, or vulnerable parameters in web applications by testing large numbers of requests.
 - Web applications use parameters in URLs, query strings, POST data, and headers to pass data between client and server.
-- Some parameters are exposed in the user interface, while others remain hidden or undocumented — these can reveal sensitive functionality or data.
+- Some parameters are exposed in the user interface, while others remain hidden or undocumented, these can reveal sensitive functionality or data.
 ---
 ## GET Parameters
 

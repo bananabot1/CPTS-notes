@@ -5,7 +5,6 @@
 - Historically vulnerable to SQLi, XSS, directory traversal, authentication bypass, and arbitrary file uploads.
 - Known CVEs: `CVE-2021-21087` (arbitrary JSP upload), `CVE-2020-24450` (command injection), `CVE-2020-24449` (arbitrary file read), `CVE-2019-15909` (XSS).
 ---
-
 ## Default Ports
 
 |Port|Protocol|Description|

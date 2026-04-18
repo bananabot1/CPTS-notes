@@ -1,7 +1,7 @@
 **Overview:*
 - Cloud storage (S3 buckets on AWS, blobs on Azure, cloud storage on GCP) is a common misconfiguration target. When access controls are not explicitly set, these resources may be publicly accessible without authentication.
 - Cloud storage endpoints are often added to company DNS for internal management convenience, making them discoverable through standard subdomain enumeration and DNS analysis.
-- Google Dorks (`inurl:`, `intext:`) are an effective first pass for finding exposed cloud resources indexed by search engines. Combining target-specific terms with storage-related keywords narrows results quickly.
+- Google Dorks (`inurl:`, `intext:`) are an effective first pass for finding exposed cloud resources indexed by search engines.
 - domain.glass provides infrastructure insight on a target domain, including cloud provider relationships and associated assets.
 - GrayHatWarfare indexes publicly exposed cloud storage across AWS, Azure, and GCP. Supports filtering by file format, making it useful for finding sensitive files left accessible in misconfigured buckets or blobs.
 ---

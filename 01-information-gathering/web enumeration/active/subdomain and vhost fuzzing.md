@@ -1,6 +1,6 @@
 **Overview:**
 - A subdomain is any website underlying another domain (e.g., photos.google.com is a subdomain of google.com).
-- VHosts (Virtual Hosts) are subdomains served on the same server with the same IP — a single IP can serve multiple different websites.
+- VHosts (Virtual Hosts) are subdomains served on the same server with the same IP. A single IP can serve multiple different websites.
 - Key difference: subdomains have DNS records, VHosts may only exist as Host header configurations without public DNS entries.
 ---
 ## DNS Configuration
