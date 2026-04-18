@@ -30,9 +30,9 @@ display the configuration file of vsftpd
 
 ## Enumeration
 
-|                                                                    |                                                                                                                      |
-| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `sudo nmap -sC -sV -p 21 -v <target>`                              | Performs an Nmap scan on the FTP service to identify versions, scripts, and checks for anonymous login. Quite noisy. |
-| `sudo nmap -sV -p21 --script ftp-anon <target-ip>`                 | Runs an Nmap script to check for anonymous authentication on the target FTP server.                                  |
-| `ftp <target>`  <br>`nc -nv <target> 21`  <br>`telnet <target> 21` | Different ways to connect to a remote FTP service.                                                                   |
-| `wget -m --no-passive ftp://<user>:<password>@<target-ip>`         | Recursively downloads all accessible files from the target FTP server using Wget.                                    |
+|                                                                                                                                                                     |                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `sudo nmap -sV -p21 --script ftp-anon <target-ip>`                                                                                                                  | Runs an Nmap script to check for anonymous authentication on the target FTP server. |
+| `ftp <target>`  <br>`nc -nv <target> 21`  <br>`telnet <target> 21`                                                                                                  | Different ways to connect to a remote FTP service.                                  |
+| `wget -m --no-passive ftp://<user>:<password>@<target-ip>`                                                                                                          | Recursively downloads all accessible files from the target FTP server using Wget.   |
+| \|   \|   \|<br>\|---\|---\|<br>\|`openssl s_client -connect <FQDN/IP>:21 -starttls ftp`\|Interact with the FTP service on the target using encrypted connection.\| |                                                                                     |
