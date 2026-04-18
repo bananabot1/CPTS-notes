@@ -7,12 +7,6 @@
 ---
 ## Dangerous Settings
 
-```
-cat /etc/vsftpd.conf
-```
-
-Display the vsFTPd configuration file.
-
 |Setting|Meaning|
 |---|---|
 |`anonymous_enable=YES`|Anonymous login allowed|
@@ -37,8 +31,7 @@ nc -nv <target> 21
 telnet <target> 21
 ```
 
-Different ways to connect and banner-grab the FTP service.
-
+Different ways to connect to the FTP service.
 
 ```
 openssl s_client -connect <target>:21 -starttls ftp
