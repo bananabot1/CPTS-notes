@@ -10,21 +10,14 @@ One of the most used FTP servers on Linux-based distributions is [vsFTPd](https:
 `Trivial File Transfer Protocol` (`TFTP`) is simpler than FTP and performs file transfers between client and server processes. However, it `does not` provide user authentication and other valuable features supported by FTP. In addition, while FTP uses TCP, TFTP uses `UDP`, making it an unreliable protocol and causing it to use UDP-assisted application layer recovery.
 
 ----
-## Default configuration
+## Dangerous settings
+
 
 ```
 cat /etc/vsftpd.conf
 ```
 
 display the configuration file of vsftpd
-
-```
- cat /etc/ftpusers
-```
-
-display the ftp users
-
-## Dangerous settings
 
 |                                |                                                                                    |
 | ------------------------------ | ---------------------------------------------------------------------------------- |
@@ -34,3 +27,12 @@ display the ftp users
 | `no_anon_password=YES`         | Do not ask anonymous for password?                                                 |
 | `anon_root=/home/username/ftp` | Directory for anonymous.                                                           |
 | `write_enable=YES`             | Allow the usage of FTP commands: STOR, DELE, RNFR, RNTO, MKD, RMD, APPE, and SITE? |
+
+## Enumeration
+
+|                                                                    |                                                                                                                      |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `sudo nmap -sC -sV -p 21 -v <target>`                              | Performs an Nmap scan on the FTP service to identify versions, scripts, and checks for anonymous login. Quite noisy. |
+| `sudo nmap -sV -p21 --script ftp-anon <target-ip>`                 | Runs an Nmap script to check for anonymous authentication on the target FTP server.                                  |
+| `ftp <target>`  <br>`nc -nv <target> 21`  <br>`telnet <target> 21` | Different ways to connect to a remote FTP service.                                                                   |
+| `wget -m --no-passive ftp://<user>:<password>@<target-ip>`         | Recursively downloads all accessible files from the target FTP server using Wget.                                    |
