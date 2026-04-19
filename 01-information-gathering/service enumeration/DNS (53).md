@@ -56,3 +56,17 @@ For the `Fully Qualified Domain Name` (`FQDN`) to be resolved from the IP addres
 |                   |                                                                                |
 
 ## Enumeration
+
+```
+dig ns inlanefreight.htb @10.129.14.128
+```
+NS request to the specific nameserver. (explain in a line what ns is )
+
+`dig any <domain.tld> @<nameserver>`
+ANY request to the specific nameserver. (explain in one line what any is)
+
+`dig axfr <domain.tld> @<nameserver>`
+AXFR request to the specific nameserver.|(explain in a line what axfr is)
+
+`dnsenum --dnsserver <nameserver> --enum -p 0 -s 0 -o found_subdomains.txt -f ~/subdomains.list <domain.tld>`
+Subdomain brute forcing.
