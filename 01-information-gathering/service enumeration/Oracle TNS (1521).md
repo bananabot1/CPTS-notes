@@ -15,3 +15,54 @@ On the other hand, the `listener.ora` file is a server-side configuration file t
 In short, the client-side Oracle Net Services software uses the `tnsnames.ora` file to resolve service names to network addresses, while the listener process uses the `listener.ora` file to determine the services it should listen to and the behavior of the listener.
 
 ##  setting up
+```
+sudo apt-get update
+sudo apt-get install -y build-essential python3-dev libaio1
+cd ~
+wget https://files.pythonhosted.org/packages/source/c/cx_Oracle/cx_Oracle-8.3.0.tar.gz
+tar xzf cx_Oracle-8.3.0.tar.gz
+cd cx_Oracle-8.3.0
+python3 setup.py build
+sudo python3 setup.py install
+cd ~
+git clone https://github.com/quentinhardy/odat.git
+cd odat/
+pip install python-libnmap
+git submodule init
+git submodule update
+sudo apt-get install python3-scapy -y
+sudo pip3 install colorlog termcolor passlib python-libnmap
+sudo apt-get install build-essential libgmp-dev -y
+pip3 install pycryptodome
+```
+Before we can enumerate the TNS listener and interact with it, we need to download a few packages and tools for our `Pwnbox` instance
+
+```
+./odat.py -h
+```
+determine if the installation was succesful
+Oracle Database Attacking Tool (`ODAT`) is an open-source penetration testing tool written in Python and designed to enumerate and exploit vulnerabilities in Oracle databases. It can be used to identify and exploit various security flaws in Oracle databases, including SQL injection, remote code execution, and privilege escalation.
+
+## enumeration
+```
+sudo nmap -p1521 -sV 10.129.204.235 --open
+```
+We can see that the port is open, and the service is running. In Oracle RDBMS, a System Identifier (`SID`) is a unique name that identifies a particular database instance. It can have multiple instances, each with its own System ID
+
+```
+sudo nmap -p1521 -sV 10.129.204.235 --open --script oracle-sid-brute
+```
+bruteforce sids
+
+```
+./odat.py all -s 10.129.204.235
+```
+`odat.py` tool to perform a variety of scans to enumerate and gather information about the Oracle database services and its components. Those scans can retrieve database names, versions, running processes, user accounts, vulnerabilities, misconfigurations, etc.
+
+## Database enumeration
+
+```
+sqlplus scott/tiger@10.129.204.235/XE
+```
+we found valid credentials for the user `scott` and his password `tiger`. After that, we can use the tool `sqlplus` to connect to the Oracle database and interact with it.
+
