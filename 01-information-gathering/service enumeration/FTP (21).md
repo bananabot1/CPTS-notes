@@ -7,14 +7,14 @@
 ---
 ## Dangerous Settings
 
-|Setting|Meaning|
-|---|---|
-|`anonymous_enable=YES`|Anonymous login allowed|
-|`anon_upload_enable=YES`|Anonymous users can upload files|
-|`anon_mkdir_write_enable=YES`|Anonymous users can create directories|
-|`no_anon_password=YES`|No password prompt for anonymous|
-|`anon_root=/home/username/ftp`|Root directory served to anonymous users|
-|`write_enable=YES`|Enables STOR, DELE, RNFR, RNTO, MKD, RMD, APPE, SITE commands|
+| Setting                        | Description                                                   |
+| ------------------------------ | ------------------------------------------------------------- |
+| `anonymous_enable=YES`         | Anonymous login allowed                                       |
+| `anon_upload_enable=YES`       | Anonymous users can upload files                              |
+| `anon_mkdir_write_enable=YES`  | Anonymous users can create directories                        |
+| `no_anon_password=YES`         | No password prompt for anonymous                              |
+| `anon_root=/home/username/ftp` | Root directory served to anonymous users                      |
+| `write_enable=YES`             | Enables STOR, DELE, RNFR, RNTO, MKD, RMD, APPE, SITE commands |
 
 ---
 ## Enumeration
