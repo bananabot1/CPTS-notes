@@ -1,0 +1,49 @@
+**Overview:**
+- MSSQL is Microsoft's closed-source relational database management system, natively integrated with the .NET framework and Windows authentication. Default service account is `NT SERVICE\MSSQLSERVER`. Listens on TCP port 1433.
+- SSMS (SQL Server Management Studio) is the primary admin client. It can be installed on any machine, meaning a compromised workstation may have SSMS with saved credentials usable to connect to the database server.
+- Impacket's `mssqlclient.py` is the most practical remote client for pentesters, available by default on most pentesting distributions.
+- Encryption is not enforced by default. Connections using self-signed certificates are vulnerable to spoofing. Named pipes, if enabled, provide an additional lateral movement vector within Windows environments.
+---
+## Default System Databases
+
+|Database|Description|
+|---|---|
+|`master`|Tracks all system-level information for the SQL Server instance|
+|`model`|Template for all new databases. Changes here propagate to every new database created|
+|`msdb`|Used by SQL Server Agent for scheduling jobs and alerts|
+|`tempdb`|Stores temporary objects, recreated on every service restart|
+|`resource`|Read-only database containing built-in system objects|
+
+---
+## Dangerous Settings
+
+|Setting|Description|
+|---|---|
+|Unencrypted client connections|Credentials and queries transmitted in plaintext|
+|Self-signed certificates|Can be spoofed to intercept encrypted sessions|
+|Named pipes enabled|Allows inter-process communication over the network, usable for lateral movement|
+|Weak or default `sa` credentials|The `sa` account is often left enabled with a weak or blank password|
+
+---
+## Enumeration
+
+```
+sudo nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p1433 <target>
+```
+
+Run all MSSQL-relevant NSE scripts. Returns hostname, instance name, MSSQL version, named pipe status, and password hashes if accessible.
+
+```
+msf6 > use auxiliary/scanner/mssql/mssql_ping
+```
+
+Metasploit auxiliary scanner for MSSQL discovery. Returns instance name, version, and pipe/port configuration.
+
+---
+## Connection
+
+```
+python3 mssqlclient.py <user>@<target> -windows-auth
+```
+
+Connect to MSSQL using Impacket's `mssqlclient.py` with Windows authentication. Use after obtaining valid credentials.
