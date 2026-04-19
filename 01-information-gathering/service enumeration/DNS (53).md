@@ -25,4 +25,34 @@ DNS also stores and outputs additional information about the services associated
 |`PTR`|The PTR record works the other way around (reverse lookup). It converts IP addresses into valid domain names.|
 |`SOA`|Provides information about the corresponding DNS zone and email address of the administrative contact.|
 
+All DNS servers work with three different types of configuration files:
+
+1. local DNS configuration files
+2. zone files
+3. reverse name resolution files
+The DNS server [Bind9](https://www.isc.org/bind/) is very often used on Linux-based distributions. Its local configuration file (`named.conf`) is roughly divided into two sections, firstly the options section for general settings and secondly the zone entries for the individual domains. The local configuration files are usually:
+
+- `named.conf.local`
+- `named.conf.options`
+- `named.conf.log`
+
+It contains the associated RFC where we can customize the server to our needs and our domain structure with the individual zones for different domains. The configuration file `named.conf` is divided into several options that control the behavior of the name server. A distinction is made between `global options` and `zone options`.
+
+Global options are general and affect all zones. A zone option only affects the zone to which it is assigned. Options not listed in named.conf have default values. If an option is both global and zone-specific, then the zone option takes precedence.
+A `zone file` is a text file that describes a DNS zone with the BIND file format. In other words it is a point of delegation in the DNS tree. The BIND file format is the industry-preferred zone file format and is now well established in DNS server software. A zone file describes a zone completely. There must be precisely one `SOA` record and at least one `NS` record. The SOA resource record is usually located at the beginning of a zone file. The main goal of these global rules is to improve the readability of zone files. A syntax error usually results in the entire zone file being considered unusable. The name server behaves similarly as if this zone did not exist. It responds to DNS queries with a `SERVFAIL` error message.
+
+In short, here, all `forward records` are entered according to the BIND format. This allows the DNS server to identify which domain, hostname, and role the IP addresses belong to
+For the `Fully Qualified Domain Name` (`FQDN`) to be resolved from the IP address, the DNS server must have a reverse lookup file. In this file, the computer name (`FQDN`) is assigned to the last octet of an IP address, which corresponds to the respective host, using a PTR record. The PTR records are responsible for the reverse translation of IP addresses into names
+
 ---
+
+## Dangerous Settings
+|                   |                                                                                |
+| ----------------- | ------------------------------------------------------------------------------ |
+| `allow-query`     | Defines which hosts are allowed to send requests to the DNS server.            |
+| `allow-recursion` | Defines which hosts are allowed to send recursive requests to the DNS server.  |
+| `allow-transfer`  | Defines which hosts are allowed to receive zone transfers from the DNS server. |
+| `zone-statistics` | Collects statistical data of zones.                                            |
+|                   |                                                                                |
+
+## Enumeration
