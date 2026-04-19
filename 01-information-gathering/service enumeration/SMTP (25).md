@@ -1,44 +1,45 @@
 **Overview:**
-The `Simple Mail Transfer Protocol` (`SMTP`) is a protocol for sending emails in an IP network. It can be used between an email client and an outgoing mail server or between two SMTP servers. SMTP is often combined with the IMAP or POP3 protocols, which can fetch emails and send emails. In principle, it is a client-server-based protocol, although SMTP can be used between a client and a server and between two SMTP servers.
-By default, SMTP servers accept connection requests on port `25`. However, newer SMTP servers also use other ports such as TCP port `587`. This port is used to receive mail from authenticated users/servers, usually using the STARTTLS command to switch the existing plaintext connection to an encrypted connection. 
+- SMTP is the standard protocol for sending emails between clients and servers, or between two mail servers. Operates on port 25 by default. Port 587 is used for authenticated client submission with STARTTLS, port 465 for implicit SSL/TLS.
+- Transmits everything in plaintext unless STARTTLS or SSL/TLS is negotiated. ESMTP (the modern extension of SMTP) handles encryption via STARTTLS after the `EHLO` command, enabling AUTH PLAIN and other extensions safely.
+- SMTP provides no reliable delivery confirmation and does not authenticate senders by default. This makes open relay misconfigurations a direct path to mail spoofing and spam abuse. SPF and DKIM are the primary mitigations deployed against this.
+- The mail delivery chain goes: MUA (client) → MSA (submission/relay) → MTA (transfer) → MDA (delivery) → mailbox (POP3/IMAP). The MSA acts as the first validation checkpoint; if misconfigured as an open relay, it can be abused to send spoofed mail from arbitrary addresses.
+---
+## Dangerous Settings
 
-SMTP works unencrypted without further measures and transmits all commands, data, or authentication information in plain text. To prevent unauthorized reading of data, the SMTP is used in conjunction with SSL/TLS encryption. Under certain circumstances, a server uses a port other than the standard TCP port `25` for the encrypted connection, for example, TCP port `465`.
-
-An essential function of an SMTP server is preventing spam using authentication mechanisms that allow only authorized users to send e-mails. For this purpose, most modern SMTP servers support the protocol extension ESMTP with SMTP-Auth. After sending his e-mail, the SMTP client, also known as `Mail User Agent` (`MUA`), converts it into a header and a body and uploads both to the SMTP server. This has a so-called `Mail Transfer Agent` (`MTA`), the software basis for sending and receiving e-mails. The MTA checks the e-mail for size and spam and then stores it. To relieve the MTA, it is occasionally preceded by a `Mail Submission Agent` (`MSA`), which checks the validity, i.e., the origin of the e-mail. This `MSA` is also called `Relay` server. These are very important later on, as the so-called `Open Relay Attack` can be carried out on many SMTP servers due to incorrect configuration. 
-
-|Client (`MUA`)|`➞`|Submission Agent (`MSA`)|`➞`|Open Relay (`MTA`)|`➞`|Mail Delivery Agent (`MDA`)|`➞`|Mailbox (`POP3`/`IMAP`)|
-|---|---|---|---|---|---|---|---|---|
-
- SMTP has two disadvantages inherent to the network protocol.
-
-1. The first is that sending an email using SMTP does not return a usable delivery confirmation. Although the specifications of the protocol provide for this type of notification, its formatting is not specified by default, so that usually only an English-language error message, including the header of the undelivered message, is returned.
-2. Users are not authenticated when a connection is established, and the sender of an email is therefore unreliable. As a result, open SMTP relays are often misused to send spam en masse. The originators use arbitrary fake sender addresses for this purpose to not be traced (mail spoofing). Today, many different security techniques are used to prevent the misuse of SMTP servers. For example, suspicious emails are rejected or moved to quarantine (spam folder). For example, responsible for this are the identification protocol [DomainKeys](http://dkim.org/) (`DKIM`), the [Sender Policy Framework](https://dmarcian.com/what-is-spf/) (`SPF`).
-
-For this purpose, an extension for SMTP has been developed called `Extended SMTP` (`ESMTP`). When people talk about SMTP in general, they usually mean ESMTP. ESMTP uses TLS, which is done after the `EHLO` command by sending `STARTTLS`. This initializes the SSL-protected SMTP connection, and from this moment on, the entire connection is encrypted, and therefore more or less secure. Now [AUTH PLAIN](https://www.samlogic.net/articles/smtp-commands-reference-auth.htm) extension for authentication can also be used safely.
-
-----
-## Dangerous settings
 ```
 mynetworks = 0.0.0.0/0
 ```
-With this setting, this SMTP server can send fake emails and thus initialize communication between multiple parties. Another attack possibility would be to spoof the email and read it.
 
-## SMTP Enumeration
-```
-telnet 10.129.14.128 25
-```
-connect to the service with telnet,
+Configures the server as an open relay, allowing any host to send mail through it. Enables spoofed email injection and makes the server usable as a spam relay or for intercepting traffic between parties.
 
-## Queries
-|   |   |
+---
+## Enumeration
+
+```
+sudo nmap <target> -p25 --script smtp-open-relay -v
+```
+
+Test whether the target SMTP server is configured as an open relay using the `smtp-open-relay` NSE script.
+
+```
+telnet <target> 25
+```
+
+Connect directly to the SMTP service for manual enumeration.
+
+---
+## SMTP Commands
+
+|Command|Description|
 |---|---|
-|`AUTH PLAIN`|AUTH is a service extension used to authenticate the client.|
-|`HELO`|The client logs in with its computer name and thus starts the session.|
-|`MAIL FROM`|The client names the email sender.|
-|`RCPT TO`|The client names the email recipient.|
-|`DATA`|The client initiates the transmission of the email.|
-|`RSET`|The client aborts the initiated transmission but keeps the connection between client and server.|
-|`VRFY`|The client checks if a mailbox is available for message transfer.|
-|`EXPN`|The client also checks if a mailbox is available for messaging with this command.|
-|`NOOP`|The client requests a response from the server to prevent disconnection due to time-out.|
-|`QUIT`|The client terminates the session.|
+|`AUTH PLAIN`|Authenticates the client. Requires an encrypted connection to be safe|
+|`HELO`|Initiates the session with the client's hostname|
+|`EHLO`|Extended HELO. Used by ESMTP to negotiate extensions including STARTTLS|
+|`MAIL FROM`|Specifies the sender address|
+|`RCPT TO`|Specifies the recipient address|
+|`DATA`|Begins email body transmission, terminated by a lone `.` on a line|
+|`VRFY`|Checks whether a mailbox exists on the server. Often abused for user enumeration|
+|`EXPN`|Expands a mailing list or alias to its members. Also useful for user enumeration|
+|`RSET`|Aborts the current transaction without closing the connection|
+|`NOOP`|Keeps the connection alive by requesting a server response|
+|`QUIT`|Terminates the session|
