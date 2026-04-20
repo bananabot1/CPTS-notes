@@ -18,6 +18,19 @@
 |`DebianBanner yes`|Displays OS/version banner on login, aiding fingerprinting|
 
 ---
+## Connection
+
+```
+`ssh <user>@<FQDN/IP>`
+```
+
+```
+ssh -i private.key <user>@<FQDN/IP>
+```
+
+Connect to the SSH service using the private key.
+
+---
 ## Enumeration
 
 ```
