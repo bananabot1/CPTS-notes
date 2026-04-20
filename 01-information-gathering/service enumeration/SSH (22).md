@@ -18,11 +18,13 @@
 |`DebianBanner yes`|Displays OS/version banner on login, aiding fingerprinting|
 
 ---
-## Connection
+## Enumeration
 
 ```
-`ssh <user>@<FQDN/IP>`
+ssh <user>@<FQDN/IP>
 ```
+
+Connect to SSH.
 
 ```
 ssh -i private.key <user>@<FQDN/IP>
@@ -30,17 +32,14 @@ ssh -i private.key <user>@<FQDN/IP>
 
 Connect to the SSH service using the private key.
 
----
-## Enumeration
+```
+ssh -v <user>@<target> -o PreferredAuthentications=password
+```
+
+Force password authentication regardless of server preference. Useful for testing if password auth is permitted and for brute-force staging.
 
 ```
 ./ssh-audit.py <target>
 ```
 
 Audit SSH client and server configuration. Returns supported algorithms, protocol version, and known weaknesses.
-
-```
-ssh -v <user>@<target> -o PreferredAuthentications=password
-```
-
-Force password authentication regardless of server preference. Useful for testing if password auth is permitted and for brute-force staging.

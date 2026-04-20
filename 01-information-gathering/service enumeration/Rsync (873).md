@@ -1,4 +1,34 @@
 **Overview:**
-[Rsync](https://linux.die.net/man/1/rsync) is a fast and efficient tool for locally and remotely copying files. It can be used to copy files locally on a given machine and to/from remote hosts. It is highly versatile and well-known for its delta-transfer algorithm. This algorithm reduces the amount of data transmitted over the network when a version of the file already exists on the destination host. It does this by sending only the differences between the source files and the older version of the files that reside on the destination server. It is often used for backups and mirroring. It finds files that need to be transferred by looking at files that have changed in size or the last modified time. By default, it uses port `873` and can be configured to use SSH for secure file transfers by piggybacking on top of an established SSH server connection.
+- Rsync is a fast file transfer tool for local and remote copying, commonly used for backups and mirroring. Operates on TCP port 873 by default.
+- Uses a delta-transfer algorithm: only sends the differences between source and destination files, minimizing data transmitted over the network.
+- Can be configured to tunnel over SSH using the `-e ssh` flag, inheriting SSH's encryption and authentication. If SSH runs on a non-standard port, pass it as `-e "ssh -p<port>"`.
+---
+## Enumeration
+
+```
+nc -nv <target> 873
+```
+
+Connect to the Rsync service and grab the banner.
+
+```
+rsync -av --list-only rsync://<target>/<share>
+```
+
+List all files in an open Rsync share without transferring anything. `-a` preserves attributes, `-v` enables verbose output.
 
 ---
+## File Transfer
+
+```
+rsync -av rsync://<target>/<share>
+```
+
+Sync all files from the remote share to the current directory on the attack host.
+
+```
+rsync -av -e ssh rsync://<target>/<share>
+rsync -av -e "ssh -p<port>" rsync://<target>/<share>
+```
+
+Sync files over an SSH-tunneled Rsync connection. Use the second form when SSH runs on a non-standard port.
