@@ -33,4 +33,4 @@ Discovers virtual hosts by fuzzing the Host header. `-fs` filters responses by s
 gobuster vhost -u http://<target_IP_address> -w <wordlist_file> --append-domain
 ```
 
-Alternative to ffuf to discover virtual
+Alternative to ffuf to discover virtual hosts. -The `-u` flag specifies the target URL. The `-w` flag specifies the wordlist file. The `--append-domain` flag appends the base domain to each word in the wordlist.
