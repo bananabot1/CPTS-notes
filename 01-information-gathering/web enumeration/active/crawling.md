@@ -12,4 +12,31 @@ For web reconnaissance, robots.txt serves as a valuable source of intelligence. 
 - `Uncovering Hidden Directories`: Disallowed paths in robots.txt often point to directories or files the website owner intentionally wants to keep out of reach from search engine crawlers. These hidden areas might house sensitive information, backup files, administrative panels, or other resources that could interest an attacker.
 - `Mapping Website Structure`: By analyzing the allowed and disallowed paths, security professionals can create a rudimentary map of the website's structure. This can reveal sections that are not linked from the main navigation, potentially leading to undiscovered pages or functionalities.
 - `Detecting Crawler Traps`: Some websites intentionally include "honeypot" directories in robots.txt to lure malicious bots. Identifying such traps can provide insights into the target's security awareness and defensive measures.
+
+The `.well-known` standard, defined in [RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615), serves as a standardized directory within a website's root domain. This designated location, typically accessible via the `/.well-known/` path on a web server, centralizes a website's critical metadata, including configuration files and information related to its services, protocols, and security mechanisms.
+
+By establishing a consistent location for such data, `.well-known` simplifies the discovery and access process for various stakeholders, including web browsers, applications, and security tools.
+
+In web recon, the `.well-known` URIs can be invaluable for discovering endpoints and configuration details that can be further tested during a penetration test. 
+```
+One particularly useful URI is `openid-configuration`.
+`https://example.com/.well-known/openid-configuration
+
 ---
+
+---
+
+----
+## web scraping
+```
+wget -O ReconSpider.zip https://academy.hackthebox.com/storage/modules/144/ReconSpider.v1.2.zip
+poi1111@htb[/htb]$ unzip ReconSpider.zip
+```
+installation
+```
+python3 ReconSpider.py http://inlanefreight.com
+```The spider will crawl the target and collect valuable information.
+
+### results.json
+
+After running `ReconSpider.py`, the data will be saved in a JSON file, `results.json`
