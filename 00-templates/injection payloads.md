@@ -12,4 +12,4 @@
 | XQuery Injection                        | `'` `;` `--` `/* */`                              |
 | Shellcode Injection                     | `\x` `\u` `%u` `%n`                               |
 | Header Injection                        | `\n` `\r\n` `\t` `%0d` `%0a` `%09`                |
-|                                         |                                                   |
+
