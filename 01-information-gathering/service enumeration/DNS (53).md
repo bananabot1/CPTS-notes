@@ -3,6 +3,7 @@
 - DNS is unencrypted by default, making queries visible to anyone on the local network or upstream. DNS over TLS (DoT) and DNS over HTTPS (DoH) address this, but are not universally enforced.
 - BIND9 is the standard DNS server on Linux. Configuration is split across `named.conf.local`, `named.conf.options`, and `named.conf.log`. Zone files must contain exactly one SOA record and at least one NS record. A syntax error renders the entire zone file invalid, causing the server to return SERVFAIL for all queries in that zone.
 - Forward records map domain names to IPs. Reverse lookup is handled by PTR records in a separate reverse zone file, mapping the last IP octet back to an FQDN.
+- [[DNS Enumeration]]
 
 **DNS Server Types:**
 
