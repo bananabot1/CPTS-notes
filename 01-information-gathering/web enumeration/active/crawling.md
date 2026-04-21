@@ -1,42 +1,23 @@
 **Overview:**
-`Crawling`, often called `spidering`, is the `automated process of systematically browsing the World Wide Web`. Similar to how a spider navigates its web, a web crawler follows links from one page to another, collecting information. These crawlers are essentially bots that use pre-defined algorithms to discover and index web pages, making them accessible through search engines or for other purposes like data analysis and web reconnaissance.
-Crawlers can extract a diverse array of data, each serving a specific purpose in the reconnaissance process:
-
-- `Links (Internal and External)`: These are the fundamental building blocks of the web, connecting pages within a website (`internal links`) and to other websites (`external links`). Crawlers meticulously collect these links, allowing you to map out a website's structure, discover hidden pages, and identify relationships with external resources.
-- `Comments`: Comments sections on blogs, forums, or other interactive pages can be a goldmine of information. Users often inadvertently reveal sensitive details, internal processes, or hints of vulnerabilities in their comments.
-- `Metadata`: Metadata refers to `data about data`. In the context of web pages, it includes information like page titles, descriptions, keywords, author names, and dates. This metadata can provide valuable context about a page's content, purpose, and relevance to your reconnaissance goals.
-- `Sensitive Files`: Web crawlers can be configured to actively search for sensitive files that might be inadvertently exposed on a website. This includes `backup files` (e.g., `.bak`, `.old`), `configuration files` (e.g., `web.config`, `settings.php`), `log files` (e.g., `error_log`, `access_log`), and other files containing passwords, `API keys`, or other confidential information. Carefully examining the extracted files, especially backup and configuration files, can reveal a trove of sensitive information, such as `database credentials`, `encryption keys`, or even source code snippets.
-- `robots.txt` is a simple text file placed in the root directory of a website (e.g., `www.example.com/robots.txt`). It adheres to the Robots Exclusion Standard, guidelines for how web crawlers should behave when visiting a website.
-For web reconnaissance, robots.txt serves as a valuable source of intelligence. While respecting the directives outlined in this file, security professionals can glean crucial insights into the structure and potential vulnerabilities of a target website:
-
-- `Uncovering Hidden Directories`: Disallowed paths in robots.txt often point to directories or files the website owner intentionally wants to keep out of reach from search engine crawlers. These hidden areas might house sensitive information, backup files, administrative panels, or other resources that could interest an attacker.
-- `Mapping Website Structure`: By analyzing the allowed and disallowed paths, security professionals can create a rudimentary map of the website's structure. This can reveal sections that are not linked from the main navigation, potentially leading to undiscovered pages or functionalities.
-- `Detecting Crawler Traps`: Some websites intentionally include "honeypot" directories in robots.txt to lure malicious bots. Identifying such traps can provide insights into the target's security awareness and defensive measures.
-
-The `.well-known` standard, defined in [RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615), serves as a standardized directory within a website's root domain. This designated location, typically accessible via the `/.well-known/` path on a web server, centralizes a website's critical metadata, including configuration files and information related to its services, protocols, and security mechanisms.
-
-By establishing a consistent location for such data, `.well-known` simplifies the discovery and access process for various stakeholders, including web browsers, applications, and security tools.
-
-In web recon, the `.well-known` URIs can be invaluable for discovering endpoints and configuration details that can be further tested during a penetration test. 
-```
-One particularly useful URI is `openid-configuration`.
-`https://example.com/.well-known/openid-configuration
-
+- Automated process of systematically browsing a target website by following links and collecting data. Sends real HTTP requests, leaving traces in server logs.
+- Extracts internal/external links, comments, metadata, and sensitive files (`.bak`, `.old`, `web.config`, `settings.php`, log files) that may expose credentials, API keys, or source code.
+- `robots.txt` (site root) lists disallowed paths, often revealing hidden directories, admin panels, and backup files the owner wants excluded from search indexing.
+- `/.well-known/` (RFC 8615) centralizes service metadata and configuration files. The `openid-configuration` URI is particularly useful for discovering authentication endpoints.
 ---
+## Installation
 
----
-
-----
-## web scraping
 ```
 wget -O ReconSpider.zip https://academy.hackthebox.com/storage/modules/144/ReconSpider.v1.2.zip
-poi1111@htb[/htb]$ unzip ReconSpider.zip
+unzip ReconSpider.zip
 ```
-installation
+
+Downloads and extracts ReconSpider.
+
+---
+## Crawling
+
 ```
-python3 ReconSpider.py http://inlanefreight.com
-```The spider will crawl the target and collect valuable information.
+python3 ReconSpider.py <target>
+```
 
-### results.json
-
-After running `ReconSpider.py`, the data will be saved in a JSON file, `results.json`
+Crawls the target and saves results to `results.json`.
