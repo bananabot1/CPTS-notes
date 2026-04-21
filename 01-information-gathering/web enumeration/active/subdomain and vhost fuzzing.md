@@ -28,3 +28,9 @@ ffuf -w <wordlist>:FUZZ -u http://<domain>:<port>/ -H 'Host: FUZZ.<domain>' -fs 
 ```
 
 Discovers virtual hosts by fuzzing the Host header. `-fs` filters responses by size to hide false positives.
+
+```
+gobuster vhost -u http://<target_IP_address> -w <wordlist_file> --append-domain
+```
+
+Alternative to ffuf to discover virtual
