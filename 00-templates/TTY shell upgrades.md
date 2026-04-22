@@ -1,8 +1,3 @@
-**Overview:**
-- A non-TTY shell has no prompt and limited functionality. Commands like `su` and `sudo` will fail, blocking most privilege escalation paths.
-- Spawning a TTY shell upgrades the session to a full interactive terminal, restoring access to those commands.
----
-## TTY Spawn Options
 
 | Command                                        | Description                                                                                 |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------- |
