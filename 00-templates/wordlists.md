@@ -13,7 +13,7 @@
 **Local File Inclusion**
 - /home/kali/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt 
 
-**Password Spraying**
+**Password Spraying/Cracking**
 -  /usr/share/wordlists/rockyou.txt
 
 **Usernames**
