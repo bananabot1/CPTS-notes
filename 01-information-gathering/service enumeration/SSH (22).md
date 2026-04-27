@@ -43,3 +43,11 @@ Force password authentication regardless of server preference. Useful for testin
 ```
 
 Audit SSH client and server configuration. Returns supported algorithms, protocol version, and known weaknesses.
+
+## Brute Force Login
+
+```
+hydra -L user.list -P password.list ssh://<target>
+```
+
+Utilizes the tool `Hydra` to brute force SSH.
