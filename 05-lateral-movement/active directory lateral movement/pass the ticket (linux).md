@@ -65,3 +65,12 @@ klist
 ```
 kinit carlos@INLANEFREIGHT.HTB -k -t /opt/specialfiles/carlos.keytab
 ```
+o keep the ticket from the current session, before importing the keytab, save a copy of the ccache file present in the environment variable `KRB5CCNAME`.
+
+## KeyTab Extract
+```
+ python3 /opt/keytabextract.py /opt/specialfiles/carlos.keytab 
+```
+abuse Kerberos on Linux is extracting the secrets from a keytab file. We were able to impersonate Carlos using the account's tickets to read a shared folder in the domain, but if we want to gain access to his account on the Linux machine, we'll need his password.
+
+We can attempt to crack the account's password by extracting the hashes from the keytab file. Let's use [KeyTabExtract](https://github.com/sosdave/KeyTabExtract), a tool to extract valuable information from 502-type `.keytab` filesWith the NTLM hash, we can perform a Pass the Hash attack. With the AES256 or AES128 hash, we can forge our tickets using Rubeus or attempt to crack the hashes to obtain the plaintext password.
