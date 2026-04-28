@@ -16,6 +16,17 @@ The table below lists several common protocols alongside their encrypted counter
 |`VNC`|`VNC with TLS/SSL`|Allows graphical remote control of another computer.|
 
 [Wireshark](https://www.wireshark.org/) is a well-known packet analyzer that comes pre-installed in nearly all penetration testing Linux distributions. It features a powerful [filter engine](https://www.wireshark.org/docs/man-pages/wireshark-filter.html) that allows for efficient searching through both live and captured network traffic. 
+[Pcredz](https://github.com/lgandx/PCredz) is a tool that can be used to extract credentials from live traffic or network packet captures. Specifically, it supports extracting the following information:
+
+- Credit card numbers
+- POP credentials
+- SMTP credentials
+- IMAP credentials
+- SNMP community strings
+- FTP credentials
+- Credentials from HTTP NTLM/Basic headers, as well as HTTP Forms
+- NTLMv1/v2 hashes from various traffic including DCE-RPC, SMBv1/2, LDAP, MSSQL, and HTTP
+- Kerberos (AS-REQ Pre-Auth etype 23) hashes
 
 ---
 
@@ -33,3 +44,16 @@ The table below lists several common protocols alongside their encrypted counter
 | `tcp.stream eq 53`                                | Filters for a specific TCP stream. Helps track a conversation between two hosts.                                                                                                     |
 | `eth.addr == 00:11:22:33:44:55`                   | Filters packets from/to a specific MAC address.                                                                                                                                      |
 | `ip.src == 192.168.24.3 && ip.dst == 56.48.210.3` | Filters traffic between two specific IP addresses. Helps track communication between specific hosts.                                                                                 |
+
+## Wireshark Credentials Hunting
+For example, we are filtering for unencrypted `HTTP` traffic.
+
+In Wireshark, it's possible to locate packets that contain specific bytes or strings. One way to do this is by using a display filter such as `http contains "passw"`. Alternatively, you can navigate to `Edit > Find Packet` and enter the desired search query manually. For example, you might search for packets containing the string `"passw"`.
+
+## Pcredz
+
+
+```
+ ./Pcredz -f demo.pcapng -t -v
+```
+run `Pcredz` against a packet capture file
