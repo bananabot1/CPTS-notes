@@ -49,7 +49,7 @@ Requests a TGT using the AES256 key. Also accepts `/rc4`, `/aes128`, or `/des`. 
 ---
 ## Pass the Ticket
 
-Use `/ptt` to inject directly into the current session in one step. Use the `.kirbi` file or Base64 string when the ticket was exported from another system and needs to be imported manually.
+Use `/ptt` to inject the ticket directly into the current session in one step. Use the `.kirbi` file or Base64 string when the ticket was exported from another system and needs to be imported manually.
 
 > Run on the Windows target.
 

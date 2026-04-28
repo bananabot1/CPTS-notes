@@ -5,7 +5,6 @@
 - **Shadow Credentials** abuses write access over a victim user's `msDS-KeyCredentialLink` attribute (visible as `AddKeyCredentialLink` in BloodHound). Writing a public key to this attribute allows obtaining a TGT as that user via PKINIT.
 - Once a TGT is obtained as a machine account (e.g. `DC01$`), DCSync becomes available. As a user account, access depends on group membership.
 - MITRE ATT&CK: T1550.003
-
 ---
 ## ESC8 - NTLM Relay to AD CS Web Enrollment
 
