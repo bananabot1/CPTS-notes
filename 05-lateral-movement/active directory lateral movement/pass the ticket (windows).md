@@ -95,7 +95,7 @@ mimikatz # kerberos::ptt "<path>\<ticket>.kirbi"
 Imports a `.kirbi` ticket into the current session via Mimikatz.
 
 ---
-## Lateral Movement with an Injected Ticket
+## Lateral Movement with a Ticket
 
 ### PowerShell Remoting (Mimikatz)
 
