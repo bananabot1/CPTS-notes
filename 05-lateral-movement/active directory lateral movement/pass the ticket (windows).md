@@ -47,7 +47,7 @@ Rubeus.exe asktgt /domain:<domain> /user:<user> /aes256:<aes256key> /nowrap
 Requests a TGT using the AES256 key. Also accepts `/rc4`, `/aes128`, or `/des`. `/nowrap` outputs the ticket as a single-line Base64 string for easy copy-paste.
 
 ---
-## Pass the Ticket - Injection
+## Pass the Ticket
 
 Use `/ptt` to inject directly into the current session in one step. Use the `.kirbi` file or Base64 string when the ticket was exported from another system and needs to be imported manually.
 
@@ -75,7 +75,7 @@ Imports a `.kirbi` ticket file into the current session.
 Rubeus.exe ptt /ticket:<base64string>
 ```
 
-Imports a ticket provided as a Base64 string. Use this when you cannot transfer a file (e.g. copy-pasting over RDP or a reverse shell). The `.kirbi` file and its Base64 representation are the same ticket in different formats — both work identically with `ptt`.
+Imports a ticket provided as a Base64 string. Use this when you cannot transfer a file (e.g. copy-pasting over RDP or a reverse shell). The `.kirbi` file and its Base64 representation are the same ticket in different formats, both work identically with `ptt`.
 
 ### Convert .kirbi to Base64
 
