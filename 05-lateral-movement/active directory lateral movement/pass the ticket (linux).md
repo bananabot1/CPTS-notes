@@ -27,3 +27,41 @@ In case [realm](https://access.redhat.com/documentation/en-us/red_hat_enterprise
 find / -name *keytab* -ls 2>/dev/null
 ```
 A straightforward approach is to use `find` to search for files whose name contains the word `keytab`. When an administrator commonly creates a Kerberos ticket to be used with a script, it sets the extension to `.keytab`
+
+```
+crontab -l
+
+# Edit this file to introduce tasks to be run by cron.
+# 
+...SNIP...
+# 
+# m h  dom mon dow   command
+*5/ * * * * /home/carlos@inlanefreight.htb/.scripts/kerberos_script_test.sh
+carlos@inlanefreight.htb@linux01:~$ cat /home/carlos@inlanefreight.htb/.scripts
+```
+Another way to find `KeyTab` files is in automated scripts configured using a cronjob or any other Linux service. If an administrator needs to run a script to interact with a Windows service that uses Kerberos, and if the keytab file does not have the `.keytab` extension, we may find the appropriate filename within the script.
+
+## Finding ccache files
+```
+env | grep -i krb5
+```
+A credential cache or [ccache](https://web.mit.edu/kerberos/krb5-1.12/doc/basic/ccache_def.html) file holds Kerberos credentials while they remain valid and, generally, while the user's session lasts. Once a user authenticates to the domain, a ccache file is created that stores the ticket information. The path to this file is placed in the `KRB5CCNAME` environment variable. This variable is used by tools that support Kerberos authentication to find the Kerberos data.
+
+```
+ls -la /tmp
+```
+`ccache` files are located, by default, at `/tmp`. We can search for users who are logged on to the computer, and if we gain access as root or a privileged user, we would be able to impersonate a user using their `ccache` file while it is still valid.
+
+## Abusing keytab files
+```
+klist -k -t /opt/specialfiles/carlos.keytab 
+```
+list keytab files information
+
+#### Impersonating a user with a KeyTab
+```
+klist 
+```
+```
+kinit carlos@INLANEFREIGHT.HTB -k -t /opt/specialfiles/carlos.keytab
+```
