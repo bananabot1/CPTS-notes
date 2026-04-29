@@ -1,51 +1,60 @@
-Live Host Enumeration:
+## 1 - Live Host Discovery
 
-- Conduct a ping sweep on the IP range
-- Use NetExec on the IP range (better information)
-- Use Responder to catch IP addresses
+- Conduct a ping sweep on the IP range.
+- Use NetExec on the IP range for richer output (hostname, OS, domain, SMB signing status).
+- Run Responder in analyze mode (`-A`) to passively collect IP addresses and NetBIOS/LLMNR announcements without poisoning.
+- Map the role of each live host (DC, file server, workstation) via targeted service enumeration before moving on.
 
-Be sure to properly understand the role of each host. Do service enumeration.
+---
+## 2 - User Enumeration (No Foothold)
 
-User Enumeration With foothold:
+Attempt all four passive methods. No single method is guaranteed to return all users.
 
-- Get user list via SMB Without foothold
-    
-- Attempt to get user list via SMB Null Authentication
-- Attempt to get user list via LDAP Anonymous Bind
-- Attempt to get user list via RPCClient
-- Attempt to get user list via RID brute-forcing
-- Attempt to get user list via Kerbruting
+- Attempt user enumeration via SMB null authentication.
+- Attempt user enumeration via LDAP anonymous bind.
+- Attempt user enumeration via RPCClient null session.
+- Attempt user enumeration via RID brute-forcing.
+- Attempt username validation via Kerbruting. Requires no credentials and generates minimal noise. Useful when null session methods are locked down.
 
-Some of these techniques are not guaranteed to discover all users. 
-Try the SMB, LDAP, RPCClient and RID methods. 
+---
+## 3 - Initial Foothold
 
-Get Foothold:
+Work through these in order. Password spraying is the last resort and can lock accounts.
+Always determine the lockout policy first.
 
-- Find Kerberoastable users from the user list
-- Find ASREProastable users from the user list
-- Use Responder to catch credential hashes
-- Try SMB Null Authentication to spider through SMB shares looking for credentials
-- Get `SYSTEM` / `root` on Domain connected host to get a Computer account
-- As a last resource, try password spraying with the user list
+- Find ASREPRoastable users from the user list.
+- Find Kerberoastable users from the user list.
+- Run Responder to catch NTLMv2 hashes during active hours.
+- Use SMB null authentication to spider shares for credentials.
+- Compromise a domain-connected host to `SYSTEM`/`root` to obtain a machine account for further enumeration.
+- As a last resort, password spray with the user list using common patterns and previously found passwords.
 
-Password spraying can lock accounts due to repeated failed attempts and should be used cautiously.
+---
+## 4 - Post-Compromise Attacks
 
-Attacks:
+Run SharpHound on every newly compromised host immediately. Review outbound BloodHound attack paths from each compromised principal before proceeding.
 
-- Use SharpHound to collect data to feed BloodHound
-- Check compromised hosts on BloodHound for outbound attack paths
-- Use NetExec to check for command execution via SMB, WinRM, and RDP for each compromised user.
-- Kerberoast
-- ASREProast
-- Look for credentials in GPOs (`gpp_password`, `autologin`)
-- For each compromised user, spider through readable SMB shares for sensitive information
-- For each compromised user, conduct SMB Hash Theft attacks on writable SMB shares
-- Look for passwords in user’s description fields
-- Check the DC’s SYSVOL SMB share for scripts containing credentials
-- [NoPac]([https://github.com/cube0x0/CVE-2021-1675](https://github.com/cube0x0/CVE-2021-1675))
-- [PrintNightmare]([https://github.com/m8sec/CVE-2021-34527](https://github.com/m8sec/CVE-2021-34527))
-- [PetitPotam]([https://github.com/topotam/PetitPotam](https://github.com/topotam/PetitPotam))
-- Try compromised local administrator hashes on other hosts
-- Try Responder on different hosts
-- Look for users with the `PASSWD_NOTREQD` field
-- Password spray using previously found passwords
+- Check command execution for each compromised user via SMB, WinRM, and RDP.
+- Kerberoast all accounts with SPNs set.
+- ASREPRoast all accounts with pre-authentication disabled.
+- Check GPOs for credentials via `gpp_password` and `gpp_autologin`.
+- Spider all readable SMB shares for each compromised user.
+- Conduct SMB hash theft attacks on writable shares for each compromised user. Pair with Responder to capture resulting hashes.
+- Check user description fields for embedded passwords.
+- Check the DC's SYSVOL share for logon scripts and scheduled task XML files containing hardcoded credentials.
+- Enumerate ADCS for vulnerable certificate templates (ESC1–ESC8).
+- Test compromised local administrator hashes against other hosts via pass-the-hash.
+- Re-run Responder from newly compromised hosts on different network segments.
+- Identify accounts with the `PASSWD_NOTREQD` flag set.
+- Password spray using previously found passwords across all known users.
+
+---
+
+## Exploitation Candidates
+
+Evaluate once BloodHound paths and initial enumeration are complete. Confirm prerequisites before attempting.
+
+- **NoPac (CVE-2021-42278 / CVE-2021-42287)**: Requires `MachineAccountQuota > 0`. Grants Domain Admin via S4U2self abuse.
+- **PrintNightmare (CVE-2021-34527)**: Requires Print Spooler running on the DC. Achieves SYSTEM via malicious DLL.
+- **PetitPotam (CVE-2021-36942)**: Requires ADCS with Web Enrollment enabled and no EPA/signing enforced. Coerces DC authentication for NTLM relay to ADCS.
+- **DCSync**: Requires `DS-Replication-Get-Changes-All` rights. Dumps all domain hashes without touching LSASS.
