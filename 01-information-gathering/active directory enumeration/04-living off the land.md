@@ -117,10 +117,13 @@ Get-DomainUser -SPN -Properties samaccountname,ServicePrincipalName
 
 Finds users on the target domain that have the Service Principal Name set. 
 
-**Commands for kerberoasting:**
-[[kerberoasting#PowerView]]
 
 ---
+```
+.\SharpView.exe Get-DomainUser -Identity forend
+```
+use SharpView to enumerate information about a specific user, such as the user `forend`, which we control.
+
 ## Snaffler
 
 ```
