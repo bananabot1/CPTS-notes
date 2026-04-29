@@ -18,6 +18,10 @@ rpcclient $> enumdomusers
 ```
 
 Discovers user accounts and their associated relative identifiers (`RID`).
+```
+ queryuser 0x457
+```
+
 
 ```
 sudo nxc smb 172.16.5.5 -u <user> -p <password> --users
@@ -51,7 +55,7 @@ Enumerates shares and permissions on the target within the context of the valid 
 ```
 smbmap -u forend -p Klmcargo2 -d INLANEFREIGHT.LOCAL -H 172.16.5.5 -R 'Department Shares' --dir-only
 ```
-Recursive list  of the directories in a share
+Recursive list  of the directories in a share. `--dir-only` provided only the output of all directories and did not list all files.
 
 ---
 ## Domain Admin Enumeration
@@ -70,3 +74,18 @@ psexec.py <domain>/<user>:<password>@172.16.5.125
 ```
 
 Impacket tool used to connect to the CLI of a Windows target via the `ADMIN$` share with valid credentials.
+
+```
+wmiexec.py inlanefreight.local/wley:'transporter@4'@172.16.5.5
+```
+
+```
+python3 windapsearch.py --dc-ip 172.16.5.5 -u forend@inlanefreight.local -p Klmcargo2 --da
+```
+
+We have several options with Windapsearch to perform standard enumeration (dumping users, computers, and groups) and more detailed enumeration. The `--da` (enumerate domain admins group members
+
+```
+python3 windapsearch.py --dc-ip 172.16.5.5 -u forend@inlanefreight.local -p Klmcargo2 -PU
+```
+To identify more potential users, we can run the tool with the `-PU` flag and check for users with elevated privileges that may have gone unnoticed.
