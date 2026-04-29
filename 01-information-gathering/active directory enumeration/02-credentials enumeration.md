@@ -4,7 +4,7 @@
 - Default domain password policy sets lockout threshold to 0 (disabled), but never assume this. Always enumerate policy first to avoid locking out accounts.
 - Valid user lists can be sourced from SMB NULL sessions, LDAP anonymous binds, Kerbrute enumeration, LinkedIn scraping, or hashes captured via Responder.
 
-## Default Password Policy
+**Default Password Policy:**
 
 |Policy|Default Value|
 |---|---|
