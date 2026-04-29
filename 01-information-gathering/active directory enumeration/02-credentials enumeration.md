@@ -68,7 +68,7 @@ nxc smb <dc-ip> -u <user> -p <password> --pass-pol
 
 Retrieve password policy with valid credentials via NetExec. `--pass-pol` pulls lockout threshold, duration, and minimum password length.
 
-> Run on the Windows target
+**Windows:**
 
 ```
 net accounts
