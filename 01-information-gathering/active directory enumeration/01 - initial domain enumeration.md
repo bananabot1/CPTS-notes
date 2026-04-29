@@ -26,7 +26,7 @@ Capture raw traffic on the interface to identify live hosts and network topology
 ---
 ## Network Poisoning
 
-**Responder:**
+>**Responder:**
 
 ```
 sudo responder -I <interface>
@@ -34,7 +34,7 @@ sudo responder -I <interface>
 
 Poison LLMNR, NBT-NS, and MDNS queries on the interface to capture NTLMv2 hashes from hosts attempting name resolution. Run during business hours to maximize capture volume.
 
-**Inveigh:**
+>**Inveigh:**
 
 ```powershell
 Import-Module .\Inveigh.ps1
