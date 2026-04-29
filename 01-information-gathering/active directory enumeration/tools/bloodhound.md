@@ -4,7 +4,7 @@
 - Collected data is uploaded to the GUI and queried via built-in path-finding queries or custom Cypher queries to identify privilege escalation paths to Domain Admin.
 - Even indirect or multi-hop paths (user → group → ACL → host → DA) are surfaced automatically, making it the fastest way to identify non-obvious escalation routes.
 ---
-## Collection
+## Collection - Linux
 
 ```
 sudo bloodhound-python -u <user> -p <password> -ns <dc-ip> -d <domain> -c all
@@ -19,6 +19,27 @@ zip -r <out-file>.zip *.json
 Compress all JSON output files into a single archive for upload to the BloodHound GUI.
 
 ---
+## Collection - Windows
+
+```powershell
+.\SharpHound.exe -c All --zipfilename <out-file>
+```
+
+Run SharpHound from a Windows attack host or domain-joined machine. `-c All` runs all collection methods including Group, LocalAdmin, GPOLocalGroup, Session, ACL, Trusts, RDP, DCOM, SPNTargets, and PSRemote. `--zipfilename` sets the output archive name. Does not require the host to be domain-joined if valid credentials are available.
+
+**SharpHound flags:**
+
+|Flag|Description|
+|---|---|
+|`-c, --collectionmethods`|Collection methods to run. Default runs a standard subset. `All` runs everything.|
+|`-d, --domain`|Specify the target domain.|
+|`-s, --searchforest`|Search all domains in the forest.|
+|`--stealth`|Prefer DC-only collection to reduce noise on endpoints.|
+|`-f`|Append a custom LDAP filter to the pre-generated query.|
+|`--distinguishedname`|Set a base DN to start the LDAP search from.|
+|`--computerfile`|Path to a file containing computer names to enumerate.|
+
+---
 ## GUI Setup
 
 ```
@@ -31,4 +52,13 @@ Start the Neo4j database service before launching BloodHound. Required for the G
 bloodhound
 ```
 
-Launch the BloodHound GUI. Log in with Neo4j credentials, then upload the zip file via the `Upload Data` button. Use the `Analysis` tab to run built-in path-finding queries or custom Cypher queries.
+Launch the BloodHound GUI. Log in with Neo4j credentials, upload the zip file via the `Upload Data` button, then use the `Analysis` tab for queries.
+
+---
+## Built-in Queries
+
+|Query|Use|
+|---|---|
+|`Find Shortest Paths To Domain Admins`|Maps all logical paths to DA via users, groups, ACLs, GPOs, and hosts. Primary escalation planning query.|
+|`Find Computers with Unsupported Operating Systems`|Identifies legacy hosts (Windows 7, Server 2008, etc.) susceptible to older RCE exploits like MS08-067. Validate they are live before attacking.|
+|`Find Computers where Domain Users are Local Admin`|Identifies hosts where any domain account has local admin rights. Any controlled account can be used to access these hosts and potentially harvest credentials from memory.|
