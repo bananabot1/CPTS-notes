@@ -51,8 +51,7 @@ Repeat for every newly compromised user account.
 - Plant malicious SCF and `.lnk` files on writable SMB shares to capture NTLMv2 hashes.
 
 ---
-
-## Post-Administrator
+## Local Administrator Privilges
 
 - Dump credentials with LaZagne.
 - Dump SAM and LSA secrets.
