@@ -1,91 +1,67 @@
 **Overview:**
-- Enumeration techniques to do after having retrieved valid credentials.
-We are interested in information about domain user and computer attributes, group membership, Group Policy Objects, permissions, ACLs, trusts, and more. We have various options available, but the most important thing to remember is that most of these tools will not work without valid domain user credentials at any permission level. So at a minimum, we will have to have acquired a user's cleartext password, NTLM password hash, or SYSTEM access on a domain-joined host.
-While looking at users in rpcclient, you may notice a field called `rid:` beside each user. A [Relative Identifier (RID)](https://docs.microsoft.com/en-us/windows/security/identity-protection/access-control/security-identifiers) is a unique identifier (represented in hexadecimal format) utilized by Windows to track and identify objects. To explain how this fits in, let's look at the examples below:
-
-- The [SID](https://docs.microsoft.com/en-us/windows/security/identity-protection/access-control/security-identifiers) for the INLANEFREIGHT.LOCAL domain is: `S-1-5-21-3842939050-3880317879-2865463114`.
-- When an object is created within a domain, the number above (SID) will be combined with a RID to make a unique value used to represent the object.
-- So the domain user `htb-student` with a RID:0x457 Hex 0x457 would = decimal `1111`, will have a full user SID of: `S-1-5-21-3842939050-3880317879-2865463114-1111`.
-- This is unique to the `htb-student` object in the INLANEFREIGHT.LOCAL domain and you will never see this paired value tied to another object in this domain or any other.
-
-However, there are accounts that you will notice that have the same RID regardless of what host you are on. Accounts like the built-in Administrator for a domain will have a RID administrator rid:0x1f4, which, when converted to a decimal value, equals `500`. The built-in Administrator account will always have the RID value `Hex 0x1f4`, or 500.
-
+- Enumeration performed after obtaining valid domain credentials at any privilege level. Covers users, groups, shares, and privileged accounts.
+- Minimum requirement is a cleartext password, NTLM hash, or SYSTEM access on a domain-joined host.
+- Every domain object is identified by a SID combined with a RID. The RID is a unique decimal suffix appended to the domain SID to form a full object SID. Built-in accounts have fixed RIDs regardless of domain (e.g. built-in Administrator is always RID 500 / `0x1f4`).
+- Key groups to note during enumeration: `Administrators`, `Domain Admins`, `Backup Operators`, `Executives`, and any group containing privileged IT staff. These are primary targets for privilege escalation.
 ---
-## User Enumeration
+## User and Group Enumeration
 
 ```
-rpcclient $> enumdomusers
+rpcclient -U <user>%<password> <dc-ip>
 ```
 
-Discovers user accounts and their associated relative identifiers (`RID`).
-```
- queryuser 0x457
-```
-
+Authenticate to the DC via RPC. Run `enumdomusers` to list all users with their RIDs, `queryuser <RID>` to retrieve detailed attributes for a specific user, `enumdomgroups` to list all domain groups.
 
 ```
-sudo nxc smb 172.16.5.5 -u <user> -p <password> --users
+nxc smb <dc-ip> -u <user> -p <password> --users
 ```
 
-Authenticates over SMB with valid credentials and enumerates users in the target Windows domain. We can also obtain a complete listing of domain groups --groups.
-The output also shows the built-in groups on the Domain Controller, such as `Backup Operators`. We can begin to note down groups of interest. Take note of key groups like `Administrators`, `Domain Admins`, `Executives`, any groups that may contain privileged IT admins, etc. These groups will likely contain users with elevated privileges worth targeting during our assessment.
+Enumerate all domain users with their attributes via SMB. Replace `--users` with `--groups` to enumerate groups or `--loggedon-users` to list active sessions on the target host.
+
 ```
---loggedon-users
+python3 windapsearch.py --dc-ip <dc-ip> -u <user>@<domain> -p <password> --da
 ```
-check out what appears to be a file server to see what users are logged in currently.
+
+Enumerate members of the Domain Admins group. Replace `--da` with `-PU` to enumerate all users with elevated privileges that may not appear in standard admin groups.
 
 ---
 ## Share Enumeration
 
 ```
-sudo nxc smb 172.16.5.5 -u <user> -p <password> <flag>
+nxc smb <dc-ip> -u <user> -p <password> --shares
 ```
 
-Enumerates the target over SMB using NetExec. `--groups` groups, `--loggedon-users` active sessions, `--shares` SMB shares.
-```
-sudo crackmapexec smb 172.16.5.5 -u forend -p Klmcargo2 -M spider_plus --share 'Department Shares'
-```
-The module `spider_plus` will dig through each readable share on the host and list all readable files
+List accessible SMB shares on the target host.
 
 ```
-smbmap -u <user> -p <password> -d <domain> -H 172.16.5.5
+nxc smb <dc-ip> -u <user> -p <password> -M spider_plus --share '<share-name>'
 ```
 
-Enumerates shares and permissions on the target within the context of the valid credentials used. `-H` specifies the target host.
-```
-smbmap -u forend -p Klmcargo2 -d INLANEFREIGHT.LOCAL -H 172.16.5.5 -R 'Department Shares' --dir-only
-```
-Recursive list  of the directories in a share. `--dir-only` provided only the output of all directories and did not list all files.
-
----
-## Domain Admin Enumeration
+Recursively list all readable files within a share. `spider_plus` module digs through each accessible share and outputs a full file listing.
 
 ```
-python3 windapsearch.py --dc-ip 172.16.5.5 -u <domain>\<user> -p <password> --da
+smbmap -u <user> -p <password> -d <domain> -H <target-ip>
 ```
 
-Enumerates the domain admins group (`--da`) using valid credentials on a target Windows domain.
+Enumerate shares and permissions on the target within the context of the provided credentials. `-H` specifies the target host.
+
+```
+smbmap -u <user> -p <password> -d <domain> -H <target-ip> -R '<share-name>' --dir-only
+```
+
+Recursively list directories within a specific share. `--dir-only` suppresses file output and shows directory structure only.
 
 ---
 ## Remote Execution
 
 ```
-psexec.py <domain>/<user>:<password>@172.16.5.125
+psexec.py <domain>/<user>:<password>@<target-ip>
 ```
 
-Impacket tool used to connect to the CLI of a Windows target via the `ADMIN$` share with valid credentials.
+Spawn an interactive shell on the target via the `ADMIN$` share. Requires local admin rights. Drops a service binary on disk, it is noisy.
 
 ```
-wmiexec.py inlanefreight.local/wley:'transporter@4'@172.16.5.5
+wmiexec.py <domain>/<user>:<password>@<target-ip>
 ```
 
-```
-python3 windapsearch.py --dc-ip 172.16.5.5 -u forend@inlanefreight.local -p Klmcargo2 --da
-```
-
-We have several options with Windapsearch to perform standard enumeration (dumping users, computers, and groups) and more detailed enumeration. The `--da` (enumerate domain admins group members
-
-```
-python3 windapsearch.py --dc-ip 172.16.5.5 -u forend@inlanefreight.local -p Klmcargo2 -PU
-```
-To identify more potential users, we can run the tool with the `-PU` flag and check for users with elevated privileges that may have gone unnoticed.
+Execute commands on the target via WMI. Does not drop a binary or create a service. Leaves a lower forensic footprint than psexec.
