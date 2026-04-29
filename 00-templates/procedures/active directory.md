@@ -19,8 +19,7 @@ Attempt all four passive methods. No single method is guaranteed to return all u
 ---
 ## 3 - Initial Foothold
 
-Work through these in order. Password spraying is the last resort and can lock accounts.
-Always determine the lockout policy first.
+Work through these in order. Password spraying is the last resort and can lock accounts. Always determine the lockout policy first.
 
 - Find ASREPRoastable users from the user list.
 - Find Kerberoastable users from the user list.

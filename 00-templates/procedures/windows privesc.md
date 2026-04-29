@@ -1,24 +1,27 @@
-### Users and Groups
+## Users and Groups
 
 - List local users and local groups.
-- Check membership of high-value groups: Local Administrators, Remote Desktop Users, Remote Management Users.
+- Check membership of high-value groups: 
+	- Local Administrators
+	- Remote Desktop Users
+	- Remote Management Users.
 
-### Operating System
+## Operating System
 
 - Identify the Windows version and build number. Cross-reference against the [Windows version list](https://en.wikipedia.org/wiki/List_of_Microsoft_Windows_versions).
 - Identify the system architecture (32-bit or 64-bit).
 
-### Network
+## Network
 
 - Enumerate IP addresses and network interfaces.
 - List active connections and listening ports.
 
-### Processes and Programs
+## Processes and Programs
 
 - List all installed applications and services.
-- Look for running processes not matching any installed application — may indicate manually dropped binaries.
+- Look for running processes not matching any installed application: may indicate manually dropped binaries.
 
-### Security Features
+## Security Features
 
 - Enumerate active security features (AV, EDR, AppLocker, UAC level, LAPS, etc.).
 
@@ -51,9 +54,8 @@ Repeat for every newly compromised user account.
 - Plant malicious SCF and `.lnk` files on writable SMB shares to capture NTLMv2 hashes.
 
 ---
-## Local Administrator Privilges
+## Local Administrator Privileges
 
 - Dump credentials with LaZagne.
 - Dump SAM and LSA secrets.
 - Dump LSASS memory.
-- Dump `NTDS.dit` if the host is a Domain Controller.
