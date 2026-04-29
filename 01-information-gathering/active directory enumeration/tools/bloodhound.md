@@ -1,24 +1,34 @@
-Once we have domain credentials, we can run the [BloodHound.py](https://github.com/fox-it/BloodHound.py) BloodHound ingestor from our Linux attack host. BloodHound is one of, if not the most impactful tools ever released for auditing Active Directory security, and it is hugely beneficial for us as penetration testers. We can take large amounts of data that would be time-consuming to sift through and create graphical representations or "attack paths" of where access with a particular user may lead. 
-The tool uses [graph theory](https://en.wikipedia.org/wiki/Graph_theory) to visually represent relationships and uncover attack paths that would have been difficult, or even impossible to detect with other tools. 
-The tool consists of two parts: the [SharpHound collector](https://github.com/BloodHoundAD/BloodHound/tree/master/Collectors) written in C# for use on Windows systems, or  the BloodHound.py collector (also referred to as an `ingestor`) and the [BloodHound](https://github.com/BloodHoundAD/BloodHound/releases) GUI tool which allows us to upload collected data in the form of JSON files. Once uploaded, we can run various pre-built queries or write custom queries using [Cypher language](https://specterops.io/blog/2017/09/18/bloodhound-intro-to-cypher/). The tool collects data from AD such as users, groups, computers, group membership, GPOs, ACLs, domain trusts, local admin access, user sessions, computer and user properties, RDP access, WinRM access, etc.
+**Overview:**
+- BloodHound ingests AD data (users, groups, computers, GPOs, ACLs, trusts, sessions, local admin rights, RDP/WinRM access) and maps attack paths using graph theory.
+- Two components: a collector (BloodHound.py for Linux, SharpHound for Windows) that outputs JSON files, and the BloodHound GUI backed by a Neo4j graph database.
+- Collected data is uploaded to the GUI and queried via built-in path-finding queries or custom Cypher queries to identify privilege escalation paths to Domain Admin.
+- Even indirect or multi-hop paths (user → group → ACL → host → DA) are surfaced automatically, making it the fastest way to identify non-obvious escalation routes.
+---
+## Collection
+
+```
+sudo bloodhound-python -u <user> -p <password> -ns <dc-ip> -d <domain> -c all
+```
+
+Run the BloodHound ingestor from a Linux attack host with valid domain credentials. `-ns` sets the nameserver to the domain controller, `-d` specifies the target domain, `-c all` runs all collection methods. Outputs JSON files in the current directory named by date and object type.
+
+```
+zip -r <out-file>.zip *.json
+```
+
+Compress all JSON output files into a single archive for upload to the BloodHound GUI.
 
 ---
-#### Executing BloodHound.py
+## GUI Setup
+
 ```
-sudo bloodhound-python -u 'forend' -p 'Klmcargo2' -ns 172.16.5.5 -d inlanefreight.local -c all 
+sudo neo4j start
 ```
-We specified our nameserver as the Domain Controller with the `-ns` flag and the domain, INLANEFREIGHt.LOCAL with the `-d` flag. The `-c all` flag told the tool to run all checks. Once the script finishes, we will see the output files in the current working directory in the format of <date_object.json>.We can retrieve specific data such as user sessions, users and groups, object properties, ACLS, or select `all` to gather as much data as possible
 
-#### Upload the Zip File into the BloodHound GUI
-We could then type `sudo neo4j start` to start the [neo4j](https://neo4j.com/) service, firing up the database we'll load the data into and also run Cypher queries against.
+Start the Neo4j database service before launching BloodHound. Required for the GUI to function.
 
-Next, we can type `bloodhound` from our Linux attack host when logged in using `freerdp` to start the BloodHound GUI application and upload the data. The credentials are pre-populated on the Linux attack host, but if for some reason a credential prompt is shown, use:
+```
+bloodhound
+```
 
-- `user == neo4j` / `pass == HTB_@cademy_stdnt!`.
-
-Once all of the above is done, we should have the BloodHound GUI tool loaded with a blank slate. Now we need to upload the data. We can either upload each JSON file one by one or zip them first with a command such as `zip -r ilfreight_bh.zip *.json` and upload the Zip file. We do this by clicking the `Upload Data` button on the right side of the window (green arrow). When the file browser window pops up to select a file, choose the zip file (or each JSON file) (red arrow) and hit `Open`.
-
-#### Searching for Relationships
-use the Analysis tab to run queries against the database. These queries can be custom and specific to what you decide using [custom Cypher queries](https://hausec.com/2019/09/09/bloodhound-cypher-cheatsheet/). We will discuss custom Cypher queries more in a later section. As seen below, we can use the built-in `Path Finding` queries on the `Analysis tab` on the `Left` side of the window.
-
-The query chosen to produce the map above was `Find Shortest Paths To Domain Admins`. It will give us any logical paths it finds through users/groups/hosts/ACLs/GPOs, etc., relationships that will likely allow us to escalate to Domain Administrator privileges or equivalent. This will be extremely helpful when planning our next steps for lateral movement through the network. 
+Launch the BloodHound GUI. Log in with Neo4j credentials, then upload the zip file via the `Upload Data` button. Use the `Analysis` tab to run built-in path-finding queries or custom Cypher queries.
