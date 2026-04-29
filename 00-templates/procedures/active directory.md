@@ -30,7 +30,7 @@ Always determine the lockout policy first.
 - As a last resort, password spray with the user list using common patterns and previously found passwords.
 
 ---
-## 4 - Post-Compromise Attacks
+## 4 - Attacks
 
 Run SharpHound on every newly compromised host immediately. Review outbound BloodHound attack paths from each compromised principal before proceeding.
 
@@ -49,8 +49,7 @@ Run SharpHound on every newly compromised host immediately. Review outbound Bloo
 - Password spray using previously found passwords across all known users.
 
 ---
-
-## Exploitation Candidates
+## Exploitation Vectors
 
 Evaluate once BloodHound paths and initial enumeration are complete. Confirm prerequisites before attempting.
 

@@ -1,60 +1,61 @@
-## Enumeration[](https://field-manual.brunorochamoura.com/manual/procedures/linux-enumeration--privilege-escalation/#enumeration)
+## 1 - Enumeration
+### Users and Groups
 
-- Enumerate users and groups
-    - [ ]  List local users
-    - [ ]  List local groups
-    - [ ]  Currently logged on users
-    - [ ]  Last logins
-    - Check membership of interesting groups
-        - [ ]  `wheel`
-        - [ ]  `docker`
-        - [ ]  `shadow`
-        - [ ]  `lxc` and `lxd`
-        - [ ]  `disk`
-        - [ ]  `adm`
-- Enumerate operating system information
-    - [ ]  Linux distribution
-    - [ ]  Kernel Version
-    - [ ]  Architecture (32 or 64 bit)
-    - [ ]  Is it AD domain joined?
-- Enumerate network information
-    - [ ]  IP addresses and network interfaces
-    - [ ]  List active connections and listening ports
-- Enumerate program and processes information
+- List local users and local groups.
+- Identify currently logged-on users.
+- Check last login history.
+- Check membership of high-value groups: `wheel`, `docker`, `shadow`, `lxc`/`lxd`, `disk`, `adm`.
+### Operating System
 
-## Privilege Escalation[](https://field-manual.brunorochamoura.com/manual/procedures/linux-enumeration--privilege-escalation/#privilege-escalation)
+- Identify the Linux distribution and kernel version.
+- Identify the system architecture (32-bit or 64-bit).
+- Check if the host is joined to an Active Directory domain.
+### Network
 
-### Global[](https://field-manual.brunorochamoura.com/manual/procedures/linux-enumeration--privilege-escalation/#global)
+- Enumerate IP addresses and network interfaces.
+- List active connections and listening ports.
+### Processes and Programs
 
-- [ ]  Identify the Linux distribution and Kernel version
-- [ ]  Check for credentials in web application configuration files
-- [ ]  Check interesting directories (e.g. `/opt`, `/var/mail`, etc.)
-- [ ]  Check capabilities
-- [ ]  Check if `sudo` version is vulnerable ([CVE-2023–22809](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-22809))
-- [ ]  Internal Nmap scan
-- [ ]  Check PwnKit
-- [ ]  Check LogRotate (versions 3.8.8, 3.11.0, 3.15. and 3.18.0)
-- [ ]  Monitor processes. Look for anything interesting.
-- [ ]  Look for writable Docker socket files.
-- [ ]  Look for Tmux sessions that can be hijacked
-- [ ]  Check for NFS shares with `no_root_squash` enabled
-- [ ]  Check kernel exploits (e.g. DirtyCow, DirtyPipe)
-- [ ]  Listen to traffic using TcpDump. Any cleartext credential?
+- Enumerate running processes and installed programs.
 
-### Per User[](https://field-manual.brunorochamoura.com/manual/procedures/linux-enumeration--privilege-escalation/#per-user)
+---
+## Privilege Escalation - Global Checks
 
-- [ ]  Check which groups user belongs to
-- [ ]  Check `sudo` rights
-- [ ]  Check for environment variables
-- [ ]  Look for ssh keys on home directory
-- [ ]  Check for hidden files in home directory
-- [ ]  Check history files on home directory
-- [ ]  Hunt for interesting files
-- [ ]  Enumerate SUID / GUID binaries
-- Check for exploitable cronjobs:
-    - [ ]  System-wide cronjobs
-    - [ ]  User-specific cronjobs
-    - [ ]  Monitor processes for regularly repeating commands, suggesting a hidden cron job.
-- [ ]  Try to read other user’s home directory (`.ssh/id_rsa`, `.bash_history`, etc.)
-- [ ]  Try using user’s password for other users
-- [ ]  Run `linpeas.sh`
+Run these regardless of which user account is held.
+
+- Identify the Linux distribution and kernel version.
+- Check for credentials in web application configuration files.
+- Check interesting directories (`/opt`, `/var/mail`, `/srv`, `/var/www`, etc.).
+- Check capabilities (`getcap -r / 2>/dev/null`).
+- Check if the `sudo` version is vulnerable (CVE-2023-22809).
+- Run an internal Nmap scan to discover services not exposed externally.
+- Check for PwnKit (CVE-2021-4034).
+- Check the Logrotate version (vulnerable: 3.8.8, 3.11.0, 3.15.0, 3.18.0).
+- Monitor processes for a few minutes. Look for scripts or binaries running as root.
+- Look for writable Docker socket files (`/var/run/docker.sock`).
+- Look for hijackable Tmux sessions owned by privileged users.
+- Check for NFS shares with `no_root_squash` enabled (`/etc/exports`).
+- Check for applicable kernel exploits (DirtyCow CVE-2016-5195, DirtyPipe CVE-2022-0847).
+- Capture traffic with `tcpdump` and look for cleartext credentials.
+
+---
+
+## Privilege Escalation - Per User Checks
+
+Repeat for every newly compromised user account.
+
+- Check which groups the user belongs to.
+- Check `sudo` rights (`sudo -l`).
+- Check for interesting environment variables (`env`).
+- Look for SSH keys in the home directory.
+- Check for hidden files in the home directory.
+- Check shell history files (`.bash_history`, `.zsh_history`, etc.).
+- Hunt for interesting files owned by or readable by the user.
+- Enumerate SUID/SGID binaries and cross-reference against GTFOBins.
+- Check for exploitable cron jobs:
+    - System-wide cron jobs (`/etc/crontab`, `/etc/cron.d/`).
+    - User-specific cron jobs (`crontab -l`).
+    - Monitor processes for regularly repeating commands suggesting a hidden cron job.
+- Attempt to read other users' home directories (`.ssh/id_rsa`, `.bash_history`, etc.).
+- Try the current user's password for other local accounts and for `sudo`.
+- Run `linpeas.sh` and review output.
