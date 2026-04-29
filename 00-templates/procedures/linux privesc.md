@@ -4,15 +4,18 @@
 - Identify currently logged-on users.
 - Check last login history.
 - Check membership of high-value groups: `wheel`, `docker`, `shadow`, `lxc`/`lxd`, `disk`, `adm`.
+
 ### Operating System
 
 - Identify the Linux distribution and kernel version.
 - Identify the system architecture (32-bit or 64-bit).
 - Check if the host is joined to an Active Directory domain.
+
 ### Network
 
 - Enumerate IP addresses and network interfaces.
 - List active connections and listening ports.
+
 ### Processes and Programs
 
 - Enumerate running processes and installed programs.
