@@ -38,4 +38,15 @@ From this first look, we have already gleaned some interesting info. BGP.he is r
 ## ```
 nslookup ns1.inlanefreight.com
 validate the two nameservers in our results.
+## Hunting For Files
+`filetype:pdf inurl:inlanefreight.com` as a search, we are looking for PDFs.
+`intext:"@inlanefreight.com" inurl:inlanefreight.com`, we are looking for any instance that appears similar to the end of an email
+Browsing the [contact page](https://www.inlanefreight.com/index.php/contact/), we can see several emails for staff in different offices around the globe. We now have an idea of their email naming convention (first.last) and where some people work in the organization.
 
+## Credentials hunting
+We can use a tool such as [linkedin2username](https://github.com/initstring/linkedin2username) to scrape data from a company's LinkedIn page and create various mashups of usernames (flast, first.last, f.last, etc.) that can be added to our list of potential password spraying targets.
+
+```
+sudo python3 dehashed.py -q inlanefreight.local -p
+```
+[Dehashed](http://dehashed.com/) is an excellent tool for hunting for cleartext credentials and password hashes in breach data. We can search either on the site or using a script that performs queries via the API. Typically we will find many old passwords for users that do not work on externally-facing portals that use AD auth (or internal), but we may get lucky! This is another tool that can be useful for creating a user list for external or internal password spraying.
