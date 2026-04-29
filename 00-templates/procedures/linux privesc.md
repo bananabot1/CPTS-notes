@@ -1,4 +1,3 @@
-## 1 - Enumeration
 ### Users and Groups
 
 - List local users and local groups.
@@ -19,7 +18,7 @@
 - Enumerate running processes and installed programs.
 
 ---
-## Privilege Escalation - Global Checks
+## Privilege Escalation
 
 Run these regardless of which user account is held.
 
@@ -39,8 +38,7 @@ Run these regardless of which user account is held.
 - Capture traffic with `tcpdump` and look for cleartext credentials.
 
 ---
-
-## Privilege Escalation - Per User Checks
+## Privilege Escalation With A Specific User
 
 Repeat for every newly compromised user account.
 
@@ -58,4 +56,4 @@ Repeat for every newly compromised user account.
     - Monitor processes for regularly repeating commands suggesting a hidden cron job.
 - Attempt to read other users' home directories (`.ssh/id_rsa`, `.bash_history`, etc.).
 - Try the current user's password for other local accounts and for `sudo`.
-- Run `linpeas.sh` and review output.
+For- Run `linpeas.sh` and review output.
