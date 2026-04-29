@@ -1,10 +1,12 @@
-Live Host Enumeration
+Live Host Enumeration:
 
 - Conduct a ping sweep on the IP range
 - Use NetExec on the IP range (better information)
 - Use Responder to catch IP addresses
 
-Be sure to properly understand the role of each host. Do your service enumeration. User Enumeration With foothold
+Be sure to properly understand the role of each host. Do service enumeration.
+
+User Enumeration With foothold:
 
 - Get user list via SMB Without foothold
     
@@ -14,7 +16,10 @@ Be sure to properly understand the role of each host. Do your service enumeratio
 - Attempt to get user list via RID brute-forcing
 - Attempt to get user list via Kerbruting
 
-Some of these techniques are not guaranteed to discover all users. At least try the SMB, LDAP, RPCClient and RID methods. Get Foothold
+Some of these techniques are not guaranteed to discover all users. 
+Try the SMB, LDAP, RPCClient and RID methods. 
+
+Get Foothold:
 
 - Find Kerberoastable users from the user list
 - Find ASREProastable users from the user list
@@ -23,7 +28,9 @@ Some of these techniques are not guaranteed to discover all users. At least try 
 - Get `SYSTEM` / `root` on Domain connected host to get a Computer account
 - As a last resource, try password spraying with the user list
 
-Password spraying can lock accounts due to repeated failed attempts and should be used cautiously. Attacks
+Password spraying can lock accounts due to repeated failed attempts and should be used cautiously.
+
+Attacks:
 
 - Use SharpHound to collect data to feed BloodHound
 - Check compromised hosts on BloodHound for outbound attack paths
