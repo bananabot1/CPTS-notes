@@ -47,6 +47,28 @@ Get-DomainTrustMapping
 ```
 PowerView can be used to perform a domain trust mapping and provide information such as the type of trust (parent/child, external, forest) and the direction of the trust (one-way or bidirectional).
 
+>**Netdom:**
+
+```
+netdom query /domain:inlanefreight.local trust
+```
+query domain trust
+
+```
+netdom query /domain:inlanefreight.local dc
+```
+query domain controllers
+
+```
+netdom query /domain:inlanefreight.local workstation
+```
+query for workstations and servers
+
+>**Bloodhound:**
+>
+>BloodHound to visualize these trust relationships by using the `Map Domain Trusts` pre-built query.
+## User enumeration across trusted domains
 ```
  Get-DomainUser -Domain LOGISTICS.INLANEFREIGHT.LOCAL | select SamAccountName
 ```
+look at all users in the child domain
