@@ -16,13 +16,14 @@ Typically, if we have control of a local admin user on a given machine, we will 
 - Like RDP, we may find that either a specific user or an entire group has WinRM access to one or more hosts. This could also be low-privileged access that we could use to hunt for sensitive data or attempt to escalate privileges or may result in local admin access, which could potentially be leveraged to further our access
 - More often than not, we will encounter SQL servers in the environments we face. It is common to find user and service accounts set up with sysadmin privileges on a given SQL server instance. We may obtain credentials for an account with this access via Kerberoasting (common) or others such as LLMNR/NBT-NS Response Spoofing or password spraying. Another way that you may find SQL server credentials is using the tool [Snaffler](https://github.com/SnaffCon/Snaffler) to find web.config or other types of configuration files that contain SQL server connection strings.
 ---
-## RDP - Linux
+## RDP
 
 ```
 Get-NetLocalGroupMember -ComputerName ACADEMY-EA-MS01 -GroupName "Remote Desktop Users"
 ```
 use the [Get-NetLocalGroupMember](https://powersploit.readthedocs.io/en/latest/Recon/Get-NetLocalGroupMember/) function to begin enumerating members of the `Remote Desktop Users` group on a given host
-
+If we gain control over a user through an attack such as LLMNR/NBT-NS Response Spoofing or Kerberoasting, we can search for the username in BloodHound to check what type of remote access rights they have either directly or inherited via group membership under `Execution Rights` on the `Node Info` tab.
+	
 
 ```
 xfreerdp /v:<target-ip> /u:<user> /p:<password> /drive:share,<local-path>
@@ -32,31 +33,23 @@ Connects to target via RDP and mounts a local directory as a shared drive.
 
 ---
 ## WinRM
+```
+Get-NetLocalGroupMember -ComputerName ACADEMY-EA-MS01 -GroupName "Remote Management Users"
+```
+use the PowerView function `Get-NetLocalGroupMember` to the `Remote Management Users` group.
 
 ```
-evil-winrm -i <target-ip> -u <user> -p <password>
+MATCH p1=shortestPath((u1:User)-[r1:MemberOf*1..]->(g1:Group)) MATCH p2=(u1)-[:CanPSRemote*1..]->(c:Computer) RETURN p2
 ```
-
-Establishes a PowerShell session with a Windows target using WinRM. 
-
----
-## MSSQL
-
-```
-mssqlclient.py <domain>/<user>@<target-ip>
-```
-
-Connects to an MSSQL server. Impacket tool. 
-
----
-# Windows
-## WinRM
+utilize this custom `Cypher query` in BloodHound to hunt for users with this type of access. This can be done by pasting the query into the `Raw Query` box at the bottom of the screen and hitting enter.
 
 ```
 $password = ConvertTo-SecureString "<password>" -AsPlainText -Force
 ```
 
 Creates a SecureString variable for the password.
+
+**windows**
 
 ```
 $cred = New-Object System.Management.Automation.PSCredential ("<domain>\<user>", $password)
@@ -70,8 +63,21 @@ Enter-PSSession -ComputerName <target> -Credential $cred
 
 Establishes a PowerShell session with the target over WinRM.
 
+**Linux**
+
+```
+evil-winrm -i <target-ip> -u <user> -p <password>
+```
+
+Establishes a PowerShell session with a Windows target using WinRM. 
+
 ---
 ## MSSQL
+
+```
+MATCH p1=shortestPath((u1:User)-[r1:MemberOf*1..]->(g1:Group)) MATCH p2=(u1)-[:SQLAdmin*1..]->(c:Computer) RETURN p2
+```
+finding this type of access via the `SQLAdmin` edge. We can check for `SQL Admin Rights` in the `Node Info` tab for a given user or use this custom Cypher query to search.
 
 ### PowerUpSQL
 
@@ -86,3 +92,17 @@ Get-SQLQuery -Verbose -Instance "<target-ip>,1433" -username "<domain>\<user>" -
 ```
 
 Connects to an SQL server and executes a query.
+
+```
+mssqlclient.py <domain>/<user>@<target-ip>
+```
+
+Connects to an MSSQL server. Impacket tool. 
+
+---
+# Windows
+
+
+---
+## MSSQL
+
