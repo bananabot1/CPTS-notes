@@ -79,13 +79,17 @@ MATCH p1=shortestPath((u1:User)-[r1:MemberOf*1..]->(g1:Group)) MATCH p2=(u1)-[:S
 ```
 finding this type of access via the `SQLAdmin` edge. We can check for `SQL Admin Rights` in the `Node Info` tab for a given user or use this custom Cypher query to search.
 
-### PowerUpSQL
+**windows**
 
 ```
 Import-Module .\PowerUpSQL.ps1
 ```
 
 Imports the PowerUpSQL tool.
+```
+Get-SQLInstanceDomain
+```
+enumerate the domain for SQL server instances.
 
 ```
 Get-SQLQuery -Verbose -Instance "<target-ip>,1433" -username "<domain>\<user>" -password "<password>" -query '<query>'
@@ -93,16 +97,16 @@ Get-SQLQuery -Verbose -Instance "<target-ip>,1433" -username "<domain>\<user>" -
 
 Connects to an SQL server and executes a query.
 
+**Linux**
+
 ```
 mssqlclient.py <domain>/<user>@<target-ip>
 ```
 
 Connects to an MSSQL server. Impacket tool. 
 
----
-# Windows
-
-
----
-## MSSQL
-
+#### enable_xp_cmdshell
+```
+SQL> enable_xp_cmdshell
+```
+run commands in the format `xp_cmdshell <command>`. Here we can enumerate the rights that our user has on the system and see that we have [SeImpersonatePrivilege](https://docs.microsoft.com/en-us/troubleshoot/windows-server/windows-security/seimpersonateprivilege-secreateglobalprivilege), which can be leveraged in combination with a tool such as [JuicyPotato](https://github.com/ohpe/juicy-potato), [PrintSpoofer](https://github.com/itm4n/PrintSpoofer), or [RoguePotato](https://github.com/antonioCoco/RoguePotato) to escalate to `SYSTEM` level privileges, depending on the target host, and use this access to continue toward our goal.
