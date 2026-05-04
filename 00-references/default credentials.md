@@ -58,4 +58,3 @@
 |iLO (HP)|Administrator|_(printed on chassis)_|
 |IPMI generic|ADMIN|ADMIN|
 |Supermicro|ADMIN|ADMIN|
-trhtrey
