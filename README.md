@@ -1,5 +1,5 @@
 ## CPTS Notes
-A collection of structured notes to be used as reference material during penetration tests and when studying for the HTB CPTS certification.
+A collection of notes which can be used as reference material during penetration tests and when studying for the HTB CPTS certification.
 
 ## Folder Structure
 The 00-references folder contains material not strictly tied to any specific attack phase (file transfers, wordlists, injection payloads, TTY shell upgrades, and default credentials) making it easy to look things up quickly during an assessment.  
