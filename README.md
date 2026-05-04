@@ -13,7 +13,8 @@ The remaining folders follow the typical attack chain of a penetration test:
 04-post-exploitation  
 05-lateral-movement  
 
-Each folder is divided by topic. For example, 01-information-gathering is split into AD enumeration, web enumeration, service enumeration, network traffic analysis, and application enumeration.  
+Each folder is divided by topic.  
+For example, 01-information-gathering is split into AD enumeration, web enumeration, service enumeration, network traffic analysis, and application enumeration.  
 Where relevant, a tools subfolder contains dedicated notes for the most commonly used tools in that phase or environment.
 
 ## File Structure
