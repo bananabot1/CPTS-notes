@@ -19,7 +19,7 @@ Where relevant, a tools subfolder contains dedicated notes for the most commonly
 
 ## File Structure
 
-Each file covers a specific technique or topic and includes an overview section explaining the theory behind the commands shown. They are meant to be used as cheatsheets, not exactly study material.
+Each file covers a specific technique or topic and includes an overview section explaining the theory behind the commands shown. They are mostly meant to be used as cheatsheets rather than study material.
 
 ## Disclaimer
 These notes are intended for use in authorized enviroments, CTF practice, and personal study. Do not use them against systems you do not have explicit permission to test.
