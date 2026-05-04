@@ -1,6 +1,6 @@
 ## Users and Groups
 
-- List local users and local groups. yyy
+- List local users and local groups. gg
 - Check membership of high-value groups: 
 	- Local Administrators
 	- Remote Desktop Users
