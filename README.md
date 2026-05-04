@@ -2,9 +2,9 @@
 A collection of structured notes to be used as reference material during penetration tests and when studying for the HTB CPTS certification.
 
 ## Folder Structure
-The 00-references folder contains material not strictly tied to any specific attack phase (file transfers, wordlists, injection payloads, TTY shell upgrades, and default credentials) making it easy to look things up quickly during an assessment.
+The 00-references folder contains material not strictly tied to any specific attack phase (file transfers, wordlists, injection payloads, TTY shell upgrades, and default credentials) making it easy to look things up quickly during an assessment.  
 It includes a procedures subfolder to navigate Active Directory, Linux privilege escalation, and Windows privilege escalation, usable as methodology checklists during an engagement.
-The remaining folders follow the typical attack chain of a penetration test:
+The remaining folders follow the typical attack chain of a penetration test:  
 
 01-information-gathering  
 02-pre-exploitation  
