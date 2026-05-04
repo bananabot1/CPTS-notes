@@ -4,7 +4,7 @@
 - Check membership of high-value groups: 
 	- Local Administrators
 	- Remote Desktop Users s
-	- Remote Management Users.
+	- Remote Management Users. gg
 
 ## Operating System
 
