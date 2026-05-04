@@ -2,7 +2,7 @@
 
 - List local users and local groups.
 - Identify currently logged-on users.
-- Check last login history. uu
+- Check last login history.
 - Check membership of high-value groups: 
 	- `wheel`
 	- `docker`
