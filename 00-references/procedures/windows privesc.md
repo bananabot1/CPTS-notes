@@ -3,7 +3,7 @@
 - List local users and local groups. gg
 - Check membership of high-value groups: 
 	- Local Administrators
-	- Remote Desktop Users
+	- Remote Desktop Users s
 	- Remote Management Users.
 
 ## Operating System
