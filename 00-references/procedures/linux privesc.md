@@ -8,7 +8,7 @@
 	- `docker`
 	- `shadow`
 	- `lxc`/`lxd`
-	- `disk`,
+	- `disk`
 	- `adm`.
 
 ### Operating System
