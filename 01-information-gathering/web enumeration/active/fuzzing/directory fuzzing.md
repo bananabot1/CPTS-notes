@@ -11,6 +11,12 @@ ffuf -w <wordlist>:FUZZ -u http://<target>:<port>/FUZZ
 
 Fuzzes directories at root level.
 
+```
+gobuster dir -u http://<target>:<port> -w <wordlist>
+```
+
+Alternative to ffuf to discover directories. The `-u` flag specifies the target URL. The `-w` flag specifies the wordlist file. 
+
 ---
 ## Extension Fuzzing
 
