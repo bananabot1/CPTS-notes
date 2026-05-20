@@ -1,5 +1,5 @@
 ## CPTS Notes
-A collection of notes which can be used as reference material during penetration tests and CTFs. It currently covers the HTB CPTS path and will be updated with additional modules and resources over time.
+A collection of notes which can be used as reference material during penetration tests and CTFs. It currently covers the HTB CPTS path and will be updated with additional modules and resources over time, which go beyond the CPTS scope.
 
 ## Folder Structure
 The 00-references folder contains material not strictly related to any specific attack phase (file transfers, wordlists, injection payloads, TTY shell upgrades, and default credentials) making it easy to look things up quickly during an assessment.  
